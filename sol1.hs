@@ -69,11 +69,17 @@ max_from_list (x:xs) = max x (max_from_list xs)
 
 -- 1.10 Remove the first element from a list
 
---removeFirstOccurence :: Int -> [Int] -> [Int]
+removeFirstOccurence :: Int -> [Int] -> [Int]
 removeFirstOccurence n []  = []
 removeFirstOccurence n (h:t) 
   | n == h    = t
   | otherwise = h:(removeFirstOccurence n t)
+
+-- Very similar, used for sorting characters
+removeFirstChar n []  = []
+removeFirstChar n (h:t) 
+  | n == h    = t
+  | otherwise = h:(removeFirstChar n t)
 
 -- 1.13 Count occurences of given character in a string
 
@@ -95,4 +101,20 @@ blowupRev (h:t) = take (length t+1)(repeat h) ++ blowupRev t
 
 sortString :: String -> String
 sortString []   = ""
-sortString list = min:(sortString (removeFirstOccurence min list)) where min = minimum list
+sortString list = min:(sortString (removeFirstChar min list)) where min = minimum list
+
+-- 1.16 Prefix example
+
+prefix :: String -> String -> Bool
+prefix [] ys = True
+prefix (x:xs) [] = False
+prefix (x:xs) (y:ys) = (x==y) && prefix xs ys
+
+-- 1.17 Find the substring by using `prefix` of 1.6
+
+substring :: String -> String -> Bool
+substring xs [] = False
+substring (x:xs) (y:ys)
+  | prefix (x:xs) (y:ys) = True
+  | substring (x:xs) ys = True
+  | otherwise = False
