@@ -118,3 +118,20 @@ substring (x:xs) (y:ys)
   | prefix (x:xs) (y:ys) = True
   | substring (x:xs) ys = True
   | otherwise = False
+  
+-- 1.18
+
+-- 1.19
+
+-- 1.20 Takes a list of lists and returns a list of the corresponding list lengths.
+-- TODO validate [1] or [1,2] i.e not lists entries as 1?
+lengths list = map (length) list
+
+-- 1.21 Sum the list of lists length
+sumLengths list = sum (lengths list)
+
+-- 1.24
+{-
+  You re-reference ldf to use the new created primes1?
+-}
+
