@@ -69,26 +69,19 @@ max_from_list (x:xs) = max x (max_from_list xs)
 
 -- 1.10 Remove the first element from a list
 
-removeFirstOccurence :: Int -> [Int] -> [Int]
+--removeFirstOccurence :: Int -> [Int] -> [Int]
 removeFirstOccurence n []  = []
-removeFirstOccurence n [h] = if n == h
-                               then []
-                               else [h]
-
-removeFirstOccurence n (h:t) = if n == h
-                                 then t
-                                 else h : removeFirstOccurence n t
+removeFirstOccurence n (h:t) 
+  | n == h    = t
+  | otherwise = h:(removeFirstOccurence n t)
 
 -- 1.13 Count occurences of given character in a string
+
 count :: Char -> String -> Int
 count c [] = 0
-count c [h] = if c == h
-                then 1
-                else 0
-
-count c (h:t) = if c == h
-                    then 1 + count c t
-                    else 0 + count c t
+count c (h:t) 
+  | c == h    = 1 + count c t
+  | otherwise = 0 + count c t
 
 -- 1.14 String conversion : a1a2a3 a1a2a2a3a3a3... etc.
 
@@ -100,9 +93,6 @@ blowupRev (h:t) = take (length t+1)(repeat h) ++ blowupRev t
 
 -- 1.15 Sort a string in lex. order
 
---sortString :: String -> String
-sortString []  = ""
-sortString [a] = [a]
-sortString [a, b] = if a > b
-                      then [b, a]
-                      else [a, b]
+sortString :: String -> String
+sortString []   = ""
+sortString list = min:(sortString (removeFirstOccurence min list)) where min = minimum list
