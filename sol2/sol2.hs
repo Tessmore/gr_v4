@@ -86,3 +86,13 @@ logEquiv3 bf1 bf2 = and [(bf1 p q r) <=> (bf2 p q r) | p <- [True,False], q <- [
 formula3 p q = p
 formula4 p q = (p <+> q) <+> q
 formula5 p q = p <=> ((p <+> q) <+> q)
+
+
+
+-- 2.12
+
+test1 = True == not False || not False == True
+
+-- test2 = logEquiv1 id (\ (not p) -> (not p))
+
+--test2 = logEquiv1 id (\ p -> False (==>) not p)

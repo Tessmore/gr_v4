@@ -15,7 +15,7 @@ divides d n = rem n d == 0
 
 -- Least divider
 ld :: Int -> Int
-ld n = ldf 2 n
+ld = ldf 2
 
 -- Least divider function
 ldf :: Int -> Int -> Int
@@ -61,10 +61,10 @@ minCustom x y | x <= y = x
 
 
 -- 1.9 Find maximum value from list of integers
-max_from_list :: [Int] -> Int
-max_from_list [] = error "empty list"
-max_from_list [x] = x
-max_from_list (x:xs) = max x (max_from_list xs)
+maxFromList :: [Int] -> Int
+maxFromList [] = error "empty list"
+maxFromList [x] = x
+maxFromList (x:xs) = max x (maxFromList xs)
 
 
 -- 1.10 Remove the first element from a list
@@ -72,14 +72,14 @@ removeFirstOccurence :: Int -> [Int] -> [Int]
 removeFirstOccurence n []  = []
 removeFirstOccurence n (h:t) 
   | n == h    = t
-  | otherwise = h:(removeFirstOccurence n t)
+  | otherwise = h:removeFirstOccurence n t
 
 -- 1.10b Remove first character (used for sorting strings)
 removeFirstChar :: Char -> String -> String
 removeFirstChar n []  = []
 removeFirstChar n (h:t) 
   | n == h    = t
-  | otherwise = h:(removeFirstChar n t)
+  | otherwise = h:removeFirstChar n t
 
 -- 1.13 Count occurences of given character in a string
 count :: Char -> String -> Int
@@ -94,12 +94,12 @@ blowup s = reverse (blowupRev (reverse s))
 
 -- 1.14b Blows up a string of reversed order
 blowupRev [] = "" 
-blowupRev (h:t) = take (length t+1)(repeat h) ++ blowupRev t
+blowupRev (h:t) = replicate (length t+1) h ++ blowupRev t
 
 -- 1.15 Sort a string in lex. order
 sortString :: String -> String
 sortString []   = ""
-sortString list = min:(sortString (removeFirstChar min list)) 
+sortString list = min:sortString (removeFirstChar min list)
                     where min = minimum list
 
 -- 1.16 Prefix example
@@ -118,7 +118,7 @@ substring (x:xs) (y:ys)
   
 -- 1.20 Returns a list of the corresponding inner list lengths.
 lengths :: [[a]] -> [Int]
-lengths list = map (length) list
+lengths = map length
 
 -- 1.21 Sum the list of lists length
 sumLengths :: [[a]] -> Int
