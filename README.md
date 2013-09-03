@@ -1,4 +1,4 @@
-Software engineering group V4 repository
+Software engineering group V4
 =====
 
 Group members : 
