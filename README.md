@@ -1,4 +1,9 @@
-gr_v4
+Software engineering group V4 repository
 =====
 
-Software engineering group V4 repository
+Group members : 
+
+* Tim Gosen
+* Lulu Zhang
+* Tina Curlinovksa
+* Fabiën Tesselaar
