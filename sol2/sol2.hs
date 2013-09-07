@@ -2,6 +2,36 @@ module Sol2 where
 
 import TAMO
 
+-- Exercise 2.13  Implement checks for the principles from Theorem 2.12.
+
+(==>) :: Bool -> Bool -> Bool 
+True ==> x = x
+False ==> x = True 
+   
+logEquiv11 :: (Bool -> Bool) -> (Bool -> Bool) -> Bool
+logEquiv11 bf1 bf2 =
+            and [(bf1 p ) <=> (bf2 p ) | p <- [True,False]]
+		  
+test1 = logEquiv11 (\ p -> not True) (\ p -> False)
+test11= logEquiv11 (\ p -> not False) (\ p -> True)
+test2 = logEquiv11 (\ p -> p ==> False) (\ p -> not p)
+test3 = logEquiv11 (\ p -> p || True ) (\ p -> True)
+test33 = logEquiv11 (\ p -> p && False) (\ p -> False)
+test4 = logEquiv11 (\ p -> p || False) (\ p -> p)
+test44 = logEquiv11 (\ p -> p && True) (\ p -> p)
+test5 = logEquiv11 (\ p -> p || (not p)) (\ p -> True)
+test6 = logEquiv11(\ p -> p && (not p)) (\ p -> False)
+
+--Alternative solution
+form11 =not p <=> q
+form12=not q <=> p
+form13=(p==>q)<=> not p
+form14=(p||p)<=> p
+form15= p && q <=> q
+form16=p||q <=> p
+form17=p && q<=> q
+
+
 -- Exercise 2.15 A propositional contradiction is a formula that yields false for every combination of truth values for its proposition letters. Write Haskell definitions of contradiction tests for propositional functions with one, two and three variables.
 
 contradiction1 :: (Bool -> Bool) -> Bool 
