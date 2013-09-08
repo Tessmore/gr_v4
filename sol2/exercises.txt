@@ -165,12 +165,33 @@ Exercise 2.18
     0  0  1   1    1     0   0
     0  1  0   1    1     1   1
     
+ (P <=> Q)							5	
+ (( P && Q ) || ((not P) && (not Q)))				6
+ (((not P) && (not Q)) || (P && Q))				1 (x2)
+ (((not P) && (not Q)) || ((not (not P)) && (not (not Q))))	5
+ ((not P) <=> (not Q))
+ 
+
+    
+    
 2. (not P <=> Q) == (P <=> not Q)
      0  1  0  1   1   1  0   0
      0  1  1  0   1   1  1   1
      1  0  1  1   1   0  1   0
      1  0  0  0   1   0  0   1
+     
+     
+ ((not P) <=> Q)						1
+ ((not P) <=> (not (not Q)))					5
+ (((not P) ==> (not (not Q))) && ((not (not Q)) ==> (not P))) 4 (x2) 
+ (((not Q) ==> P) && (P ==> (not Q)))				6
+ ((P ==> (not Q)) && ((not Q) ==> P))				5
+ (P <=> (not Q))
 
+Exercise 2.19
+if Phi is logically equivalent to Psi then it clearly Phi <=> Psi holds because if both are true so is <=> and if both are false <=> is also true (looking at the truth table, this can be confirmed). If Phi <=> Psi holds then both must be either true or false (look at the truth table) therefore Phi is logically equivalent to Psi
+ 
+ 
 Exercise 2.21
 
 (Symbols missing, so using AND and OR as notation for /\  \/)
@@ -307,6 +328,9 @@ Exercise 2.38
 	4	0	∞	-∞	\		\			\
 	5	1	1	\	4	y's father		\
 
+Exercise 2.39
+The proof is the same as with ex 2.19. If Phi and Psi are logically equivalent, we can conclude that they obtain the same truth value in every structure, therefore we can conclude that Phi <=> Psi holds. If Phi <=> Psi holds, then clearly they also have the same truth value for every structure, otherwise <=> wouldn't hold. Therefore we can conclude that Phi is logically equivalent to Psi.
+Concluding Phi is l.equiv. to Psi iff Phi <=> Psi.
 
 Exercise 2.41
 
