@@ -3,10 +3,6 @@ module Sol2 where
 import TAMO
 
 -- Exercise 2.13  Implement checks for the principles from Theorem 2.12.
-
-(==>) :: Bool -> Bool -> Bool 
-True ==> x = x
-False ==> x = True 
    
 logEquiv11 :: (Bool -> Bool) -> (Bool -> Bool) -> Bool
 logEquiv11 bf1 bf2 =
