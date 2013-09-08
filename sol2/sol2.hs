@@ -47,9 +47,43 @@ contradict_test1a = contradiction1 (\ p -> not (not p))
 contradict_test2a = contradiction2 (\ p q -> p ==> q)
 contradict_test3a = contradiction3 (\ p q r -> p && (q && r))
 
+formTest1 p = p && not p
+formTest2 p = p || not p
+formTest3 p q = (p && not p) && (q || not q)
+formTest4 p q = (p || not p) || (q || not q)
+formTest5 p q r = (p && not p) && (q || not q) && (r && not r)
+formTest6 p q r = (p || not p) || (q || not q) && (r || not r)
+
+-- 2.20
+
+formula1_1 p q = not p ==> q 
+formula1_2 p q = p ==> not q
+formula2_1 p q = not p ==> q
+formula2_2 p q = q ==> not p
+formula3_1 p q = not p ==> q
+formula3_2 p q = not q ==> p
+formula4_1 p q r = p ==> (q ==> r)
+formula4_2 p q r = q ==> (p ==> r)
+formula5_1 p q r = p ==> (q ==> r)
+formula5_2 p q r = (p ==> q) ==> r
+formula6_1 p q = (p ==> q) ==> p
+formula6_2 p q = p
+formula7_1 p q r = p || q ==> r
+formula7_2 p q r = (p ==> r) && (q ==> r)
+
+test_formula1 = logEquiv2 formula1_1 formula1_2
+test_formula2 = logEquiv2 formula2_1 formula2_2
+test_formula3 = logEquiv2 formula3_1 formula3_2
+test_formula4 = logEquiv3 formula4_1 formula4_2
+test_formula5 = logEquiv3 formula5_1 formula5_2
+test_formula6 = logEquiv2 formula6_1 formula6_2
+test_formula7 = logEquiv3 formula7_1 formula7_2
+
+--Exercise 2.51
+unique :: (a -> Bool) -> [a] -> Bool
+unique p xs = length (filter p xs) == 1
 
 -- Exercise 2.52 Define a function parity :: [Bool] -> Bool that gives True for parity xs just in case an even number of the xss equals True.
-
 parity :: [Bool] -> Bool
 parity xs = length (filter (\b -> b) xs) `rem` 2 == 0
 
