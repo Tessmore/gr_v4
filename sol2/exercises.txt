@@ -1,0 +1,347 @@
+Exercise 2.2 Make up the truth table for the exclusive version of or.
+
+P   Q   P v Q
+1   1     0
+1   0     1
+0   1     1
+0   0     0
+
+Exercise 2.4 Check that the truth table for exclusive or from Exercise 2.2 is equivalent to the table for :(P , Q). Conclude that the Haskell implementation of the function <+> for exclusive or in the frame below is correct.
+
+P  Q  P <=> Q
+1  1     1
+1  0     0
+0  1     0
+0  0     1
+
+Negation of (p<=>Q) is 0,1,1,0 which is the same as the truth table for exclusive or.
+
+Exercise 2.11 The First Law of De Morgan was proved in Example 2.6. This method 
+was implemented above. Use the method by hand to prove the other parts of Theorem 2.10.
+
+2. P && P = P
+   1  1  1  1
+   0  0  0  0
+
+   P || P = P
+   1  1  1  1
+   0  0  0  0
+
+
+3. (P => Q) = !P || Q
+    1  1  1   0  1  1
+    1  0  0   0  0  0
+    0  1  1   1  1  1
+    0  1  0   1  1  0
+
+ ! ( P => Q) = P && (! Q)
+  0   1 1  1    1  0  0 1
+  1   1 0  0    1  1  1 0
+  0   0 1  1    0  0  0 1
+  0	  0 1  0    0  0  1 0
+
+4. (! P => ! Q) = (Q => P)
+    0 1 1  0 1     1 1  1
+    0 1 1  1 0     0 1  1
+    1 0 0  0 1     1 0  0
+    1 0 1  1 0     0 1  0
+
+  
+(P => ! Q) = (Q => ! P)
+ 1  0 0 1     1  0 0 1
+ 1  1 1 0     0  1 0 1
+ 0  1 0 1     1  1 1 0
+ 0  1 1 0     0  1 1 0
+  
+ (! P => Q ) = (! Q => P)
+ 0 1  1 1      0 1  1 1
+ 0 1  1 0      1 0  1 1
+ 1 0  1 1      0 1  1 0
+ 1 0  0 0      1 0  0 0
+  
+5. (P <=> Q) = (( P => Q ) && ( Q => P ))
+    1  1  1       1  1 1    1   1  1 1
+    1  0  0       1  0 0    0   0  1 1
+    0  0  1       0  1 1    0   1  0 0
+    0  1  0       0  1 0    1   0  1 0
+  
+(P <=> Q) = (( P && Q ) || (! P && ! Q))
+ 1  1  1       1  1 1    1  0 1  0 0 1
+ 1  0  0       1  0 0    0  0 1  0 1 0
+ 0  0  1       0  0 1    0  1 0  0 0 1
+ 0  1  0       0  0 0    1  1 0  1 1 0
+  
+6.  P && Q = Q && P
+    1  1 1   1  1 1
+    1  0 0   0  0 1
+    0  0 1   1  0 0
+    0  0 0   0  0 0
+
+    P || Q = Q || P
+    1  1 1   1  1 1
+    1  1 0   0  1 1
+    0  1 1   1  1 0
+    0  0 0   0  0 0
+
+7. ! (P && Q) = ! P || ! Q
+   0  1  1 1    0 1  0 0 1
+   1  1  0 0    0 1  1 1 0
+   1  0  0 1    1 0  1 0 1
+   1  0  0 0    1 0  1 1 0
+  
+  
+   ! (P || Q) = ! P && ! Q
+   0  1  1 1    0 1  0 0 1
+   0  1  1 0    0 1  0 1 0
+   0  0  1 1    1 0  0 0 1
+   1  0  0 0    1 0  1 1 0
+  
+8. P && (Q && R) = (P && Q) && R	
+   1  1  1  1 1     1  1 1  1  1
+   1  0  1  0 0     1  1 1  0  0
+   1  0  0  0 1     1  0 0  0  1
+   1  0  0  0 0     1  0 0  0  0
+   0  0  1  1 1     0  0 1  0  1
+   0  0  1  0 0     0  0 1  0  0
+   0  0  0  0 1     0  0 0  0  1
+   0  0  0  0 0     0  0 0  0  0
+
+   P || (Q || R) = (P || Q) || R
+   1  1  1  1 1     1  1 1  1  1
+   1  1  1  1 0     1  1 1  1  0
+   1  1  0  1 1     1  1 0  1  1
+   1  1  0  0 0     1  1 0  1  0
+   0  1  1  1 1     0  1 1  1  1
+   0  1  1  1 0     0  1 1  1  0
+   0  1  0  1 1     0  0 0  1  1
+   0  0  0  0 0     0  0 0  0  0
+
+9. P && (Q || R) = (P && Q) || (P && R)
+   1  1  1  1 1     1  1 1   1  1  1 1
+   1  1  1  1 0     1  1 1   1  1  0 0
+   1  1  0  1 1     1  0 0   1  1  1 1
+   1  0  0  0 0     1  0 0   0  1  0 0
+   0  0  1  1 1     0  0 1   0  0  0 1
+   0  0  1  1 0     0  0 1   0  0  0 0
+   0  0  0  1 1     0  0 0   0  0  0 1
+   0  0  0  0 0     0  0 0   0  0  0 0
+
+   P || (Q && R) = (P || Q) && (P || R)
+   1  1  1  1 1     1  1 1   1  1  1 1
+   1  1  1  0 0     1  1 1   1  1  1 0
+   1  1  0  0 1     1  1 0   1  1  1 1
+   1  1  0  0 0     1  1 0   1  1  1 0
+   0  1  1  1 1     0  1 1   1  0  1 1
+   0  0  1  0 0     0  1 1   0  0  0 0
+   0  0  0  0 1     0  0 0   0  0  1 1
+   0  0  0  0 0     0  0 0   0  0  0 0
+
+   
+Exercise 2.16  Produce useful denials for every sentence of Exercise 2.31. (A denial of _ is an equivalent of :_.)
+
+1. The equation x2 + 1 = 0 does not has solution.
+2. A largest natural number exists.
+3. The number 13 is not prime. 
+4. The number n is not prime.
+5. There are finitely many primes.
+
+Exercise 2.17 Produce a denial for the statement that x < y < z (where x; y; z ElementOf R).
+
+    x > y && y > z
+  
+  or
+  
+    x > y && y > z && x > z
+
+  or
+  
+    x = y = z
+  
+Exercise 2.18
+
+1. (P <=> Q) == (not P <=> not Q)
+    1  1  1   1    0     1   0
+    1  0  0   1    0     0   1
+    0  0  1   1    1     0   0
+    0  1  0   1    1     1   1
+    
+2. (not P <=> Q) == (P <=> not Q)
+     0  1  0  1   1   1  0   0
+     0  1  1  0   1   1  1   1
+     1  0  1  1   1   0  1   0
+     1  0  0  0   1   0  0   1
+
+Exercise 2.21
+
+(Symbols missing, so using AND and OR as notation for /\  \/)
+
+1. Q => P
+
+2. 2^2^2 = 16
+
+3. True
+   False
+  not P AND not Q
+  not P AND  Q
+   P AND not Q
+   P AND  Q
+  not P
+  not Q
+  P
+  Q
+  not P OR not Q
+  not P OR  Q
+   P OR not Q
+   P OR  Q
+  (P AND not Q) OR (not P AND  Q)
+  (P AND  Q) OR (not P AND not Q)
+  
+4. we can treat every letter with "t" as positive and "f" as negative, and list every result of "t" using "and" to combine each letter. 
+Then we can use "or" to combine every result. For example, in the first exercise, we can list the result:
+  F =  P AND  Q
+  F =  P AND not Q
+  F = not P AND not Q
+
+Then we combine these results:
+  F = (P AND Q) OR (P AND not Q) OR (not P AND not Q) === Q => P
+  
+5. 2^2^3 = 256
+
+
+Exercise 2.22 Can you think of an argument showing that statement (2.1) is true?
+
+ Between every two rational numbers that are not the same,
+ there are infinite rational numbers between them.
+ (4.12 is between 4.11 and 4.13, which is between 4.101 - 4.131 etc.)
+
+Exercise 2.23
+
+	1. All x (Ax => (Bx => Cx))
+       |
+		Ax => (Bx => Cx)
+		  /		\
+		Ax		Bx => Cx
+				 / 	\
+				Bx	Cx
+	
+	2. Exist x (Ax AND Bx)
+			|
+		Ax AND Bx
+		 /	\
+		Ax	Bx
+		
+	3. Exist x Ax AND Exist x Bx
+				/	  \
+		Exist x Ax	 Exist x Bx
+			|			  |
+			Ax		   	Bx
+
+
+Exercise 2.26 Write as formulas with restricted quantifiers:
+
+1. Exist x∈Q Exist y∈Q (x<y) 
+2. All   x∈R Exist y∈R (x < y)
+3. All   x∈Z Exist m,n∈N (x = m-n) 
+
+Exercise 2.27  Write as formulas without restricted quantifiers
+
+1. All x, Exist m Exist n (x ∈ Q,  n ∈ Z => ( n != 0 && m / n)
+2. AlL x  forAll y (x ∈ F, y ∈ D =>(Oxy => Bxy)
+
+Exercise 2.31 Translate into formulas, taking care to express the intended meaning:
+
+1. Exist x ∈ Q (x^2+1=0)
+2. All x Exist y ∈ R (x < y) OR 2. All x∈N Exist y∈N (y > x)
+3. ¬Exist x∈N (x < 13 ∧ x > 1 ∧ x|13)
+4. ¬Exist x∈N (x < n ∧ x > 1 ∧ x|n)
+5. All m∈N Exist n∈N (n > m ∧ (¬Exist x∈N (x < n ∧ x > 1 ∧ x|n)))
+
+Exercise 2.32 Translate into formulas.
+
+1. All x (L(x, d))
+2. All x (L(d, x))
+3. All x (M(x) => M'(x))
+4. Exist x (B(x) ∧ ¬F(x))
+
+Exercise 2.33 Translate into formulas, using appropriate expressions for the predicates:
+
+1. All x∈Dogs (Bark(x) => ¬Bite(x))
+2. All x (Glitter(x) => ¬Gold(x))
+3. All x All y (Friend(D, x) ∧ Friend(x, y) => Friend(D, y))
+4. All x Exist y∈N (n > y => 1/n < x)
+
+Exercise 2.34
+
+1. All x (¬L(x, d) => x = Charles)
+2. All x (M(x) => (Exist p, q∈ W (A(x, p) ∧ A(x, q) ∧ p ≠ q)))  
+3. All x (M(x) => (All y∈ W All z∈ W (Marry(x, y) ∧ Marry(x, z) => y = z)))
+
+Exercise 2.35
+
+1. Exist x (King(x) ∧ All y (King(y) => y = x) ∧ ¬Raging(x))
+2. Exist x (K(x) ∧ All y (K(y) => y = x) ∧ All z (S(z, x) => L(z, x)))
+
+Exercise 2.36
+
+1. The equation x^2 = 5 has a real solution
+2. There is no greatest natural number
+3. For any natural number n, 2^n + 1 is prime
+4. For any natural number n, there exists a natural number m > n that there is no natural number between n and m
+5. The sequence ak converges to a
+
+Exercise 2.37
+
+  a	b	c	d	e	f
+1	f	f	f	f	f	f
+2	t	f	t	f	f	f
+3	f	f	f	f	f	f	
+4	t	f	f	f	f	f
+5	t	f	f	f	f	f
+
+Exercise 2.38
+
+		a	b	 c	 d		e			f
+	1	-1	∞	-∞			\			\
+	2	1	1	1	1	y's father		\
+	3	-1	∞	-∞	\		\			\
+	4	0	∞	-∞	\		\			\
+	5	1	1	\	4	y's father		\
+
+
+Exercise 2.41
+
+1. All x∈ R (x^2 ≠ 5) 
+2. Exist n∈ N All m∈ N (n >= m)
+3. Exist n∈ N Exist d∈ N (1 < d < (2^n + 1) ∧ d|(2^n + 1))
+4. Exist n∈ N All m∈ N (n >= m ∨ Exist p ∈ N (n < p < m))
+5. Exist ε∈ R+ All n∈ N Exist m∈ N (m >= n ∧ (|a - am| > ε))
+
+
+Exercise 2.46
+
+No. 
+If A means N and Φ(x) means "x >= 0", the first formula is false but the second one is true.
+
+
+Exercise 2.47
+
+No. 
+If A means N and Φ(x) means "x >= 0", the first formula is true but the second one is false.
+
+
+Exercise 2.48
+
+1. All x∈ A All y∈ B Φ(x, y) ≡ All y∈ B All x∈ A Φ(x, y)
+   Exist x∈ A Exist y∈ B Φ(x, y) ≡ Exist y∈ B Exist x∈ A Φ(x, y)
+
+2. ¬All x∈ A Φ(x)   ≡   Exist x∈ A ¬Φ(x)
+   ¬Exist x∈ A Φ(x) ≡   All x∈ A ¬Φ(x)
+   ¬All x∈ A ¬Φ(x)  ≡   Exist x∈ A Φ(x)
+   ¬Exist x∈ A ¬Φ(x)   ≡   All x∈ A Φ(x)
+   
+3. All x∈ A (Φ(x) ∧ Ψ(x))  ≡  (All x∈ A Φ(x) ∧ All x∈ A Ψ(x))
+   Exist x∈ A (Φ(x) ∨ Ψ(x))  ≡  (Exist x∈ A Φ(x) ∨ Exist x∈ A Ψ(x))
+   
+Exercise 2.50
+
+Exist δ > 0 All n Exist m >= n (|a - am| >= δ)

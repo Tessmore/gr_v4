@@ -1,0 +1,51 @@
+1.4 Suppose in the definition of ldf we replace the condition k^2 > n by k^2 >= n, 
+    where >= expresses ‘greater than or equal’. Would that make any difference 
+    to the meaning of the program? Why (not)?
+
+  There will be no difference in the meaning of the program because the ending 
+  condition (k^2>=n) is after  the expression for checking if k is n’s divider. 
+
+
+1.6 Can you gather from the definition of divides what the type declaration 
+    for rem would look like?
+
+  divides :: Int -> Int -> Bool
+
+  Divides returns a Bool answer, so the reminder check function should do 
+  everything before returning a Bool, which is the Int -> Int part
+
+  rem :: Int -> Int
+
+  
+1.18 Find expressions with the following types:
+
+  1. [String]         ---> ("How are you?")
+  2. (Bool, String)   ---> (True, "Hi")
+  3. [(Bool, String)] ---> [(False, "Hi again")]
+  4. ([Bool], String) ---> ([True, True, True], "I am ok")
+
+1.19 Use the Hugs command :t to find the types of the following predefined functions:
+
+  Prelude> :t head
+    head :: [a] -> a
+  Prelude> :t last
+    last :: [a] -> a
+  Prelude> :t init
+    init :: [a] -> [a]
+  Prelude> :t fst
+    fst :: (a, b) -> a
+  Prelude> :t (++)
+    (++) :: [a] -> [a] -> [a]
+  Prelude> :t flip
+    flip :: (a -> b -> c) -> b -> a -> c
+  Prelude> :t flip (++)
+    flip (++) :: [a] -> [a] -> [a]
+    
+1.24 What happens when you modify the defining equation of ldp as follows:
+ 
+ldp :: Integer -> Integer
+ldp = ldpf primes1
+
+As there is only one case with one argument: by lazy evaluation, removing "n" 
+changes nothing in the actual functionality. Now, instead of an answer; ldp will 
+return the function execution of ldpf primes1 (given an integer argument)
