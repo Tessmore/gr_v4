@@ -46,14 +46,30 @@ triangle a b c
   | otherwise                                                = Other
 
 -- Very simple tests
--- Should be true
-testTriangle1 = triangle 1 2 2 == Isosceles && 
+-- Should all be true
+testTriangle1 = triangle 1 2 5 == NoTriangle && 
+                triangle 0 3 2 == NoTriangle &&
+                triangle 7 3 2 == NoTriangle
+
+testTriangle2 = triangle 5 5 5 == Equilateral && 
+                triangle 9 9 9 == Equilateral
+
+testTriangle3 = triangle 1 2 2 == Isosceles && 
                 triangle 1 2 1 == Isosceles &&
                 triangle 1 2 2 == triangle 4 2 4
 
-testTriangle2 = triangle 3 4 5    == Rectangular &&
+testTriangle4 = triangle 3 4 5    == Rectangular &&
                 triangle 18 24 30 == Rectangular &&
-                triangle 6 8 10 == triangle 5 3 4
+                triangle 6 8 10   == triangle 5 3 4
+
+testTriangle5 = triangle 6 4 5 == Other &&
+                triangle 2 4 3 == Other
+                
+testAllTriangles = testTriangle1 && 
+                   testTriangle2 && 
+                   testTriangle3 && 
+                   testTriangle4 &&
+                   testTriangle5
 
 {-
  - Exercise 2.2
@@ -61,9 +77,11 @@ testTriangle2 = triangle 3 4 5    == Rectangular &&
  20 min
  -}
 
+-- Any possible input must return false for "f" to be a contradiction.
 contradiction :: Form -> Bool
-contradiction f = not (all (\ v -> eval v f) (allVals f)) 
+contradiction f = not (all (\ v -> eval v f) (allVals f)) -- not (tautology f)
 
+-- Any possible input must return true for "f" to be a tautology
 tautology :: Form -> Bool
 tautology f = all (\ v -> eval v f) (allVals f)
 
