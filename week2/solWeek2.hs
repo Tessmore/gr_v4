@@ -15,7 +15,9 @@ import Week2
 
 {- Exercise 2.1
 
-Timeliness
+Time spent
+  15 min.
+
 
 * OR is the fastest (finding a single True statement, the rest can be skipped), 
   so we want to write as much with OR as possible.
@@ -44,9 +46,18 @@ triangle a b c
   | a*a + b*b == c*c || a*a + c*c == b*b || b*b + c*c == a*a = Rectangular
   | otherwise                                                = Other
 
+testTriangle1 = triangle 1 2 2 == Isosceles && 
+                triangle 1 2 1 == Isosceles &&
+                triangle 1 2 2 == triangle 4 2 4
+
+testTriangle2 = triangle 3 4 5    == Rectangular &&
+                triangle 18 24 30 == Rectangular &&
+                triangle 6 8 10 == triangle 5 3 4
 
 {-
  - Exercise 2.2
+ 
+ 20 min
  -}
 
 contradiction :: Form -> Bool
@@ -58,7 +69,8 @@ tautology f = all (\ v -> eval v f) (allVals f)
 -- logical entailment
 entails :: Form -> Form -> Bool
 entails f1 f2 = tautology (Impl f1 f2)
--- -- logical equivalence
+
+-- logical equivalence
 equiv :: Form -> Form -> Bool
 equiv f1 f2 = tautology (Equiv f1 f2)
 
@@ -66,6 +78,7 @@ equiv f1 f2 = tautology (Equiv f1 f2)
 {-
  - Exercise 2.3
  -}
+
 cnf :: Form -> Form
 cnf (Prop x) = Prop x
 cnf (Cnj fs) = Cnj (map cnf fs)
@@ -102,5 +115,3 @@ dist f1 f2 = Dsj [f1,f2]
 --dist x y | Dsj (f:fs) f2	= Cnj [dist (f, f2), dist (fs, f2)]
 --	 | f2 Dsj (f:fs) 	= Cnj [dist (f2, f), dist (f2, fs)]
 --	 | otherwise		= Dsj [x,y]
-
- 
