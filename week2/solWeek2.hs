@@ -182,3 +182,7 @@ isCnf x = let
 -- Use with f and (cnf (nnf (arrowfree f))) as inputs
 isCorrectCnf :: Form -> Form -> Bool
 isCorrectCnf f cnfF = (isCnf cnfF) && (equiv f cnfF)
+
+{- Testing of cnf function
+ -
+ -}
