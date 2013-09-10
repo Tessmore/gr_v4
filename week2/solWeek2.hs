@@ -76,6 +76,29 @@ dist (Cnj x) y = Cnj [(dist (head x) y), (dist (Cnj (tail x)) y)]
 dist x (Cnj (y)) = Cnj [dist x (head y), dist x (Cnj (tail y))]
 dist x y = Dsj [x, y]
 
+
+{-
+cnf :: Form -> Form 
+cnf (Prop x) = Prop x
+cnf (Neg (Prop x)) = Neg (Prop x)
+cnf (Cnj fs) = Cnj (map cnf fs)
+cnf (Dsj []) = Dsj []
+cnf(Dsj [f]) = cnf f 
+cnf (Dsj (f1:f2:fs)) = dist (cnf f1) (cnf (Dsj(f2:fs)))
+
+
+dist :: Form -> Form -> Form 
+dist (Cnj []) _ = Cnj []
+dist (Cnj [f1]) f2 = dist f1 f2
+dist (Cnj (f1:fs)) f2 = Cnj [dist f1 f2, dist (Cnj fs) f2]
+dist _ (Cnj []) = Cnj []
+dist f1 (Cnj [f2]) = dist f1 f2
+dist f1 (Cnj (f2:fs)) = Cnj [dist f1 f2, dist f1 (Cnj fs)]
+dist f1 f2 = Dsj [f1,f2]
+
+
+
+-}
 --dist x y | Dsj (f:fs) f2	= Cnj [dist (f, f2), dist (fs, f2)]
 --	 | f2 Dsj (f:fs) 	= Cnj [dist (f2, f), dist (f2, fs)]
 --	 | otherwise		= Dsj [x,y]
