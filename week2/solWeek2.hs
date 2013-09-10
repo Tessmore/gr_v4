@@ -64,35 +64,37 @@ triangle2 (a:b:c:xs) = triangle a b c
 testTrianglePermutations :: Integer -> Integer -> Integer -> Bool
 testTrianglePermutations a b c = length (nub (map triangle2 (permutations [a,b,c]))) == 1
 
--- Test all possible combinations of 3 given numbers
--- TODO get some use for this
-testTriangleCombinations a b c = map triangle2 (replicateM 3 [a,b,c])
+-- Loopen en kijken 1..5, 
 
--- Very simple tests
--- Should all be true
-testTriangle1 = triangle 1 2 5 == NoTriangle && 
-                triangle 0 3 2 == NoTriangle &&
-                triangle 7 3 2 == NoTriangle
+-- Basic tests
+-- For known side lengths we expect certain output
+-- We also want to test if it does not return a certain shape it cannot possibly be
+testTriangle1a = triangle 1 2 5    == NoTriangle
+testTriangle1b = triangle 5 2 5    /= NoTriangle
 
-testTriangle2 = triangle 5 5 5 == Equilateral && 
-                triangle 9 9 9 == Equilateral
+testTriangle2a = triangle 5 5 5    == Equilateral
+testTriangle2b = triangle 4 5 5    /= Equilateral
 
-testTriangle3 = triangle 1 2 2 == Isosceles && 
-                triangle 1 2 1 == Isosceles &&
-                triangle 1 2 2 == triangle 4 2 4
+testTriangle3a = triangle 1 2 2    == Isosceles
+testTriangle3b = triangle 3 3 3    /= Isosceles
 
-testTriangle4 = triangle 3 4 5    == Rectangular &&
-                triangle 18 24 30 == Rectangular &&
-                triangle 6 8 10   == triangle 5 3 4
+testTriangle4a = triangle 18 24 30 == Rectangular
+testTriangle4b = triangle 2 3 5    /= Rectangular
 
-testTriangle5 = triangle 6 4 5 == Other &&
-                triangle 2 4 3 == Other
-                
-testAllTriangles = testTriangle1 && 
-                   testTriangle2 && 
-                   testTriangle3 && 
-                   testTriangle4 &&
-                   testTriangle5
+testTriangle5a = triangle 6 4 5    == Other
+testTriangle5b = triangle 1 2 2    /= Other
+
+-- Should all be true                
+testAllTriangles = testTriangle1a && 
+                   testTriangle1b && 
+                   testTriangle2a && 
+                   testTriangle2b && 
+                   testTriangle3a && 
+                   testTriangle3b && 
+                   testTriangle4a &&
+                   testTriangle4b &&
+                   testTriangle5a &&
+                   testTriangle5b
 
 
 {-
@@ -102,20 +104,39 @@ testAllTriangles = testTriangle1 &&
  -}
 
 -- Any possible input must return false for "f" to be a contradiction.
+-- So there should not be any solution
 contradiction :: Form -> Bool
-contradiction f = not (all (\ v -> eval v f) (allVals f)) -- not (tautology f)
+contradiction f = not (any (\ v -> eval v f) (allVals f))
 
--- Any possible input must return true for "f" to be a tautology
+-- Testing (must be true)
+contradictionTest1 = contradiction (Dsj [p, Neg p]) == False
+contradictionTest2 = contradiction (Cnj [p, Neg p])
+contradictionTest3 = contradiction (Dsj [p, q]) == False
+contradictionTest4 = contradiction (Cnj [p, q]) == False
+
+
+-- All possible input must return true for "f" to be a tautology
 tautology :: Form -> Bool
 tautology f = all (\ v -> eval v f) (allVals f)
+
+tautologyTest1 = tautology (Dsj [p, Neg p])
+tautologyTest2 = tautology (Cnj [p, Neg p]) == False
+tautologyTest3 = tautology (Dsj [p, q]) == False
+tautologyTest4 = tautology (Cnj [p, q]) == False
 
 -- logical entailment
 entails :: Form -> Form -> Bool
 entails f1 f2 = tautology (Impl f1 f2)
 
+-- entailsTest1 =  
+
 -- logical equivalence
 equiv :: Form -> Form -> Bool
 equiv f1 f2 = tautology (Equiv f1 f2)
+
+-- Testing
+equivTest1 = equiv (Cnj [Dsj [p, q], Dsj [p, r]]) (Cnj [Dsj [p, q], Dsj [p, r]]) -- Identical formula
+equivTest2 = equiv (Cnj [Dsj [p, q], Dsj [p, r]]) (Cnj [Dsj [p, r], Dsj [p, q]]) -- Rearranged formula
 
 
 {-
