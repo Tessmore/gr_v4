@@ -12,6 +12,7 @@ Group GR_V_4:
 module SolWeek2 where
 
 import Week2
+import Control.Monad
 
 {- Exercise 2.1
 
@@ -45,6 +46,14 @@ triangle a b c
   | a*a + b*b == c*c || a*a + c*c == b*b || b*b + c*c == a*a = Rectangular
   | otherwise                                                = Other
 
+-- Triangle test helper
+triangle2 :: [Integer] -> Shape
+triangle2 [] = NoTriangle
+triangle2 (a:b:c:xs) = triangle a b c
+
+-- Test all possible combinations of 3 given numbers
+testTriangleFn a b c = map triangle2 (replicateM 3 [a,b,c])
+
 -- Very simple tests
 -- Should all be true
 testTriangle1 = triangle 1 2 5 == NoTriangle && 
@@ -70,6 +79,7 @@ testAllTriangles = testTriangle1 &&
                    testTriangle3 && 
                    testTriangle4 &&
                    testTriangle5
+
 
 {-
  - Exercise 2.2
