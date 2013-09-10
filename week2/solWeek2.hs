@@ -13,24 +13,34 @@ module SolWeek2 where
 
 import Week2
 
-{-
- - Exercise 2.1
- -}
+{- Exercise 2.1
 
+Timeliness
+
+* OR is the fastest (finding a single True statement, the rest can be skipped), 
+  so we want to write as much with OR as possible.
+
+* Rectangular checks are most costly, the next costly is NoTriangle. However,
+  if it is of NoTriangle all additional tests are useles.
+
+Testing:
+
+* No way of knowing it works for every triangle, as an Integer has infinite numbers and
+we would have to check an infinite amount of triangles
+
+-}
 
 data Shape = NoTriangle | Equilateral
-            | Isosceles | Rectangular | Other deriving (Eq,Show)
+            | Isosceles | Rectangular | Other deriving (Eq, Show)
 
 triangle :: Integer -> Integer -> Integer -> Shape
-triangle x y z | not ((x + y > z) && (x + z > y) && (y + z > x)) 		= NoTriangle
-	       | x == y && x == z 						= Equilateral
-	       | (x == y) || (y == z) || (z == x) 				= Isosceles
-	       | (x^2 + y^2 == z^2) || (x^2 + z^2 == y^2) || (y^2 + z^2 == x^2) = Rectangular
-	       | otherwise							= Other
+triangle a b c
+  | a+b < c || b+c < a || a+c < b                            = NoTriangle
+  | a == b && b == c                                         = Equilateral
+  | a == b || a == c || b == c                               = Isosceles
+  | a*a + b*b == c*c || a*a + c*c == b*b || b*b + c*c == a*a = Rectangular
+  | otherwise                                                = Other
 
-{-
- - Time spend on implementation 15 minutes
- -}
 
 {-
  - Exercise 2.2
@@ -49,9 +59,6 @@ entails f1 f2 = tautology (Impl f1 f2)
 equiv :: Form -> Form -> Bool
 equiv f1 f2 = tautology (Equiv f1 f2)
 
-{-
- - Time spend on implementation now 45 minutes 
- -}
 
 {-
  - Exercise 2.3
