@@ -2,7 +2,7 @@
 
 Group GR_V_4: 
 
-  Fabi�n Tesselaar, 
+  Fabien Tesselaar, 
   Tim Gosen, 
   Lulu Zhang, 
   Tina Churlinovska
@@ -17,7 +17,6 @@ import Week2
 
 Time spent
   15 min.
-
 
 * OR is the fastest (finding a single True statement, the rest can be skipped), 
   so we want to write as much with OR as possible.
@@ -46,6 +45,7 @@ triangle a b c
   | a*a + b*b == c*c || a*a + c*c == b*b || b*b + c*c == a*a = Rectangular
   | otherwise                                                = Other
 
+-- Very simple tests
 testTriangle1 = triangle 1 2 2 == Isosceles && 
                 triangle 1 2 1 == Isosceles &&
                 triangle 1 2 2 == triangle 4 2 4
