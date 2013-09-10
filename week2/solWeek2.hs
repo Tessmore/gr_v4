@@ -120,49 +120,37 @@ equiv f1 f2 = tautology (Equiv f1 f2)
 
 {-
  - Exercise 2.3
+ -
+ - 2 hours implementation of function
+ - 2 hours of writing tests
+ - 1 hour Testing
+ - 1/2 hour documentation of tests
  -}
 
 cnf :: Form -> Form 
-cnf (Prop x) = Prop x						--Simple proposition is just a simple proposition
-cnf (Neg (Prop x)) = Neg (Prop x)				--Negation of prop is just a negation of prop
+cnf (Prop x) = Prop x						--Propositions in itself are cnf
+cnf (Neg (Prop x)) = Neg (Prop x)				--Negations in itself are cnf
 cnf (Cnj fs) = Cnj (map cnf fs)					--Conjuntions? Good we want conjunctions, so run cnf on all members of conjuntion
-cnf (Dsj []) = Dsj []						--Exception to guarantee success of cnf (Dsj(f2:fs)) in which fs can be empty
-cnf (Dsj [f]) = cnf f 						--
-cnf (Dsj (f1:f2:fs)) = dist (cnf f1) (cnf (Dsj(f2:fs)))		--
+cnf (Dsj []) = Dsj []						--Exception to help cnf (Dsj(f2:fs)) in which fs can be empty
+cnf (Dsj [f]) = cnf f 						--Make the members of a disjuntion cnf
+cnf (Dsj (f1:f2:fs)) = dist (cnf f1) (cnf (Dsj(f2:fs)))		--Incase of a Dsj you want all its propositions to be in cnf aswell before dist so it can transform inner conjunctions to disjuncions
 
+dist :: Form -> Form -> Form 					
+dist (Cnj []) _ = Cnj []					--Conjunctions of empty lists should be passed up the recursion tree again
+dist (Cnj [f1]) f2 = dist f1 f2					--Case towards disjunction step but after important recursion
+dist (Cnj (f1:fs)) f2 = Cnj [dist f1 f2, dist (Cnj fs) f2]	--The first important recusions step mentioned in the slides
+dist _ (Cnj []) = Cnj []					--Again conjunctions of empty lists should be passed up the recussion tree again
+dist f1 (Cnj [f2]) = dist f1 f2					--Case towards disjuntion step but 
+dist f1 (Cnj (f2:fs)) = Cnj [dist f1 f2, dist f1 (Cnj fs)]	--The second important recursion step mentioned in the slides
+dist f1 f2 = Dsj [f1,f2]					--Ret
 
-dist :: Form -> Form -> Form 
-dist (Cnj []) _ = Cnj []
-dist (Cnj [f1]) f2 = dist f1 f2
-dist (Cnj (f1:fs)) f2 = Cnj [dist f1 f2, dist (Cnj fs) f2]
-dist _ (Cnj []) = Cnj []
-dist f1 (Cnj [f2]) = dist f1 f2
-dist f1 (Cnj (f2:fs)) = Cnj [dist f1 f2, dist f1 (Cnj fs)]
-dist f1 f2 = Dsj [f1,f2]
-
+-- some predefined formulas for testing purposes.
 formTest1 =  Equiv (Impl p q) (Neg q)
 formTest2 =  Equiv (Cnj [p, q, r]) (Cnj [(Neg p), r])
 formTest3 =  Dsj [(Cnj[(Neg q), p]), (Cnj[q,(Neg p)])]
 formTest4 =  Cnj [(Dsj[p,q,r]),(Dsj[(Neg p)]),(Dsj[(Neg q), (Neg r)])]
-{-
-isCnf :: Form -> Bool
-isCnf (Prop x) = True
-isCnf (Neg (Neg x)) = False
-isCnf (Neg x)  = True && isCnf x
-isCnf (Impl x y) = False
-isCnf (Equiv x y) = False
-isCnf (Cnj fs) = and (map isCnf fs)
-isCnf (Dsj fs) = let 
-		  isCnfHelper (Prop x) = True
-		  isCnfHelper (Neg (Neg x)) = False
-		  isCnfHelper (Neg x) = True && (isCnfHelper x)
-		  isCnfHelper (Impl x y) = False
-		  isCnfHelper (Equiv x y) = False
-		  isCnfHelper (Dsj fs) = and (map isCnfHelper fs)
-		  isCnfHelper (Cnj fs) = False		  	
-		 in isCnfHelper (Dsj fs)
 
--}
+-- Test function that guarantees that a formula is arrow free
 isArrowFree :: Form -> Bool
 isArrowFree (Equiv x y) = False
 isArrowFree (Impl x y) = False
@@ -170,15 +158,27 @@ isArrowFree (Cnj fs) = and (map isArrowFree fs)
 isArrowFree (Dsj fs) = and (map isArrowFree fs)
 isArrowFree (_) = True
 
+-- Test funtion that guarantees that a formula is double negation free
 isNegNegFree :: Form -> Bool 
 isNegNegFree (Neg (Neg x)) = False
 isNegNegFree (Cnj fs) = and (map isNegNegFree fs)
 isNegNegFree (Dsj fs) = and (map isNegNegFree fs)
 isNegNegFree (_) = True
 
+-- Test function that guarantees that a formula is in cnf by checking the rules for cnf
 isCnf :: Form -> Bool
 isCnf x = let
            isCnfHelp1 (Cnj fs) = and (map isCnfHelp1 fs)
-	   --isCnfHelp1 (Dsj fs) = l
+	   isCnfHelp1 (Dsj fs) = let
+				  isCnfHelp2 (Prop x) = True
+				  isCnfHelp2 (Neg x) = True && (isCnfHelp2 x)
+				  isCnfHelp2 (Dsj x) = and (map isCnfHelp2 x)
+				  isCnfHelp2 (Cnj x) = False
+				 in and (map isCnfHelp2 fs)
+	   isCnfHelp1 _ = True
 	  in (isArrowFree x) && (isNegNegFree x) && (isCnfHelp1 x)
 
+-- Test function that checks if a Formula and its cnf are equivalent and that its cnf is actually cnf
+-- Use with f and (cnf (nnf (arrowfree f))) as inputs
+isCorrectCnf :: Form -> Form -> Bool
+isCorrectCnf f cnfF = (isCnf cnfF) && (equiv f cnfF)
