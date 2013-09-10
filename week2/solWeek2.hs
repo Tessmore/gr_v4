@@ -97,6 +97,7 @@ testAllTriangles = testTriangle1a &&
                    testTriangle5b
 
 
+
 {-
  - Exercise 2.2
  
@@ -128,7 +129,9 @@ tautologyTest4 = tautology (Cnj [p, q]) == False
 entails :: Form -> Form -> Bool
 entails f1 f2 = tautology (Impl f1 f2)
 
--- entailsTest1 =  
+entailsTest1 = entails (Impl (Impl p q) p) p
+entailsTest2 = entails (Neg p) p == False
+entailsTest3 = entails (Equiv p q) (Dsj[Cnj[p,q],Cnj[Neg p, Neg q]])
 
 -- logical equivalence
 equiv :: Form -> Form -> Bool
