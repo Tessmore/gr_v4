@@ -46,6 +46,7 @@ triangle a b c
   | otherwise                                                = Other
 
 -- Very simple tests
+-- Should be true
 testTriangle1 = triangle 1 2 2 == Isosceles && 
                 triangle 1 2 1 == Isosceles &&
                 triangle 1 2 2 == triangle 4 2 4
