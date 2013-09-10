@@ -12,13 +12,18 @@ Group GR_V_4:
 module SolWeek2 where
 
 import Week2
+import Data.List
 import Control.Monad
 
 {- Exercise 2.1
 
 Time spent
-  15 min.
-
+   5 min. on reading wikipedia triangle information
+  15 min. on function
+  20 min reading on testing
+   1 min writing simple tests
+   3 min writing additional permutation / combination tests
+   
 * OR is the fastest (finding a single True statement, the rest can be skipped), 
   so we want to write as much with OR as possible.
 
@@ -51,8 +56,17 @@ triangle2 :: [Integer] -> Shape
 triangle2 [] = NoTriangle
 triangle2 (a:b:c:xs) = triangle a b c
 
+-- Test to make sure the order of given numbers does not matter
+-- 1. Generates all permutations
+-- 2. Casts triangle on every element
+-- 3. Using nub, all duplicate Shapes are removed
+-- 4. Check if the list only contains one item
+testTrianglePermutations :: Integer -> Integer -> Integer -> Bool
+testTrianglePermutations a b c = length (nub (map triangle2 (permutations [a,b,c]))) == 1
+
 -- Test all possible combinations of 3 given numbers
-testTriangleFn a b c = map triangle2 (replicateM 3 [a,b,c])
+-- TODO get some use for this
+testTriangleCombinations a b c = map triangle2 (replicateM 3 [a,b,c])
 
 -- Very simple tests
 -- Should all be true
