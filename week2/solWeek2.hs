@@ -28,7 +28,7 @@ Testing:
 * No way of knowing it works for every triangle, as an Integer has infinite numbers and
 we would have to check an infinite amount of triangles
 
-* Posiive and negative tests: values expected to produce the desired output and values that aren't adequate
+* Positive and negative tests: values expected to produce the desired output and values that aren't adequate
 for constructing a triangle
 
 -}
