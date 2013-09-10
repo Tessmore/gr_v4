@@ -51,24 +51,57 @@ triangle a b c
   | a*a + b*b == c*c || a*a + c*c == b*b || b*b + c*c == a*a = Rectangular
   | otherwise                                                = Other
 
--- Triangle test helper
+-- Triangle test helpers
+-- Accepts a list to be used with triangle function
 triangle2 :: [Integer] -> Shape
-triangle2 [] = NoTriangle
 triangle2 (a:b:c:xs) = triangle a b c
 
--- Test to make sure the order of given numbers does not matter
--- 1. Generates all permutations
--- 2. Casts triangle on every element
--- 3. Using nub, all duplicate Shapes are removed
--- 4. Check if the list only contains one item
+-- Returns the Shape + what made the shape for testing purposes
+triangle3 :: [Integer] -> (Shape, [Integer])
+triangle3 (a:b:c:xs) = (triangle a b c, [a,b,c])
+
+-- Test all combinations of rectangles based on a list of integers
+testAllTriangleShapes :: [Integer] -> [(Shape, [Integer])]
+testAllTriangleShapes list = map triangle3 (replicateM 3 list)
+
+{-
+
+  Automated test to make sure the order of given numbers does not matter
+
+  1. Generates all permutations
+  2. Casts triangle on every element
+  3. Using nub, all duplicate Shapes are removed
+  4. Check if the list only contains one item
+  
+-}
 testTrianglePermutations :: Integer -> Integer -> Integer -> Bool
 testTrianglePermutations a b c = length (nub (map triangle2 (permutations [a,b,c]))) == 1
 
--- Loopen en kijken 1..5, 
 
--- Basic tests
--- For known side lengths we expect certain output
--- We also want to test if it does not return a certain shape it cannot possibly be
+{-
+  Automated test to check the function for finding Rectangular shaped triangle
+  
+  1. Go through all possible triangles with sides of length 1 to 5
+  2. There can only be a single rectangular triangle (sides with 3 4 5)
+-}
+
+-- Check for a Rectangular shaped triangle
+isRectangle :: (Shape, [Integer]) -> Bool
+isRectangle (x, (h:t)) = x == Rectangular
+
+-- Builds a list of all combinations of triangles, then filters them to get a list
+-- of triangles that are Rectangular shaped. For inspection of the lengths
+testRectangularTriangle :: [(Shape, [Integer])]
+testRectangularTriangle = filter (isRectangle) (map triangle3 (replicateM 3 [0..5]))
+
+
+{- 
+  Basic tests
+
+  For known side lengths we expect certain output
+  We also want to test if it does not return a certain shape it cannot possibly be
+-}
+
 testTriangle1a = triangle 1 2 5    == NoTriangle
 testTriangle1b = triangle 5 2 5    /= NoTriangle
 
