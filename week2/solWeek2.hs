@@ -249,6 +249,20 @@ isCnf x = let
 isCorrectCnf :: Form -> Form -> Bool
 isCorrectCnf f cnfF = (isCnf cnfF) && (equiv f cnfF)
 
-{- Testing of cnf function
- -
- -}
+-- Test function to check all conversion to CNF are correct.
+cnfTest1 = isCnf (cnf (nnf (arrowfree formTest1)))
+cnfTest2 = isCnf (cnf (nnf (arrowfree formTest2)))
+cnfTest3 = isCnf (cnf (nnf (arrowfree formTest3)))
+cnfTest4 = isCnf (cnf (nnf (arrowfree formTest4)))
+
+--Test fuction that checks all.
+testAllCnf = cnfTest1 && cnfTest2 && cnfTest3 && cnfTest4
+
+--Test function to check that its the correct CNF for the test formula.
+correctCnfTest1 = isCorrectCnf formTest1 (cnf (nnf (arrowfree formTest1)))
+correctCnfTest2 = isCorrectCnf formTest2 (cnf (nnf (arrowfree formTest2)))
+correctCnfTest3 = isCorrectCnf formTest3 (cnf (nnf (arrowfree formTest3)))
+correctCnfTest4 = isCorrectCnf formTest4 (cnf (nnf (arrowfree formTest4)))
+
+--Test function to check all all conversion are the correct cnf of the test formulas.
+testAllCorrectCnf = correctCnfTest1 && correctCnfTest2 && correctCnfTest3 && correctCnfTest4
