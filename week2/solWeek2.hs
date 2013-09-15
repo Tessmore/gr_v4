@@ -1,4 +1,5 @@
 {-
+Week 2 assignment
 
 Group GR_V_4: 
 
@@ -143,11 +144,19 @@ contradiction :: Form -> Bool
 contradiction f = not (any (\ v -> eval v f) (allVals f))
 
 -- Testing (must be true)
-contradictionTest1 = contradiction (Dsj [p, Neg p]) == False
-contradictionTest2 = contradiction (Cnj [p, Neg p])
-contradictionTest3 = contradiction (Dsj [p, q]) == False
-contradictionTest4 = contradiction (Cnj [p, q]) == False
+contradictionTest1 = contradiction (Cnj [(Impl p q), (Impl p (Neg q))]) == False
+contradictionTest2 = contradiction (Cnj [Neg (Impl p q), Neg (Impl q p)])
+contradictionTest3 = contradiction (Dsj [p, Neg p]) == False
+contradictionTest4 = contradiction (Cnj [p, Neg p])
+contradictionTest5 = contradiction (Dsj [p, q]) == False
+contradictionTest6 = contradiction (Cnj [p, q]) == False
 
+contradictionTestAll = contradictionTest1 &&
+                       contradictionTest2 &&
+                       contradictionTest3 &&
+                       contradictionTest4 &&
+                       contradictionTest5 &&
+                       contradictionTest6
 
 -- All possible input must return true for "f" to be a tautology
 tautology :: Form -> Bool
@@ -185,21 +194,21 @@ equivTest2 = equiv (Cnj [Dsj [p, q], Dsj [p, r]]) (Cnj [Dsj [p, r], Dsj [p, q]])
  -}
 
 cnf :: Form -> Form 
-cnf (Prop x) = Prop x						--Propositions in itself are cnf
-cnf (Neg (Prop x)) = Neg (Prop x)				--Negations in itself are cnf
-cnf (Cnj fs) = Cnj (map cnf fs)					--Conjuntions? Good we want conjunctions, so run cnf on all members of conjuntion
-cnf (Dsj []) = Dsj []						--Exception to help cnf (Dsj(f2:fs)) in which fs can be empty
-cnf (Dsj [f]) = cnf f 						--Make the members of a disjuntion cnf
-cnf (Dsj (f1:f2:fs)) = dist (cnf f1) (cnf (Dsj(f2:fs)))		--Incase of a Dsj you want all its propositions to be in cnf aswell before dist so it can transform inner conjunctions to disjuncions
+cnf (Prop x) = Prop x                                     --Propositions in itself are cnf
+cnf (Neg (Prop x)) = Neg (Prop x)                         --Negations in itself are cnf
+cnf (Cnj fs) = Cnj (map cnf fs)                           --Conjuntions? Good we want conjunctions, so run cnf on all members of conjuntion
+cnf (Dsj []) = Dsj []                                     --Exception to help cnf (Dsj(f2:fs)) in which fs can be empty
+cnf (Dsj [f]) = cnf f                                     --Make the members of a disjuntion cnf
+cnf (Dsj (f1:f2:fs)) = dist (cnf f1) (cnf (Dsj(f2:fs)))   --Incase of a Dsj you want all its propositions to be in cnf aswell before dist so it can transform inner conjunctions to disjuncions
 
-dist :: Form -> Form -> Form 					
-dist (Cnj []) _ = Cnj []					--Conjunctions of empty lists should be passed up the recursion tree again
-dist (Cnj [f1]) f2 = dist f1 f2					--Case towards disjunction step but after important recursion
-dist (Cnj (f1:fs)) f2 = Cnj [dist f1 f2, dist (Cnj fs) f2]	--The first important recusions step mentioned in the slides
-dist _ (Cnj []) = Cnj []					--Again conjunctions of empty lists should be passed up the recussion tree again
-dist f1 (Cnj [f2]) = dist f1 f2					--Case towards disjuntion step but 
-dist f1 (Cnj (f2:fs)) = Cnj [dist f1 f2, dist f1 (Cnj fs)]	--The second important recursion step mentioned in the slides
-dist f1 f2 = Dsj [f1,f2]					--Ret
+dist :: Form -> Form -> Form
+dist (Cnj []) _ = Cnj []                                    --Conjunctions of empty lists should be passed up the recursion tree again
+dist (Cnj [f1]) f2 = dist f1 f2                             --Case towards disjunction step but after important recursion
+dist (Cnj (f1:fs)) f2 = Cnj [dist f1 f2, dist (Cnj fs) f2]  --The first important recusions step mentioned in the slides
+dist _ (Cnj []) = Cnj []                                    --Again conjunctions of empty lists should be passed up the recussion tree again
+dist f1 (Cnj [f2]) = dist f1 f2                             --Case towards disjuntion step but 
+dist f1 (Cnj (f2:fs)) = Cnj [dist f1 f2, dist f1 (Cnj fs)]  --The second important recursion step mentioned in the slides
+dist f1 f2 = Dsj [f1,f2]                                    --Ret
 
 -- some predefined formulas for testing purposes.
 formTest1 =  Equiv (Impl p q) (Neg q)
@@ -225,15 +234,15 @@ isNegNegFree (_) = True
 -- Test function that guarantees that a formula is in cnf by checking the rules for cnf
 isCnf :: Form -> Bool
 isCnf x = let
-           isCnfHelp1 (Cnj fs) = and (map isCnfHelp1 fs)
-	   isCnfHelp1 (Dsj fs) = let
-				  isCnfHelp2 (Prop x) = True
-				  isCnfHelp2 (Neg x) = True && (isCnfHelp2 x)
-				  isCnfHelp2 (Dsj x) = and (map isCnfHelp2 x)
-				  isCnfHelp2 (Cnj x) = False
-				 in and (map isCnfHelp2 fs)
-	   isCnfHelp1 _ = True
-	  in (isArrowFree x) && (isNegNegFree x) && (isCnfHelp1 x)
+            isCnfHelp1 (Cnj fs) = and (map isCnfHelp1 fs)
+            isCnfHelp1 (Dsj fs) = let
+                                    isCnfHelp2 (Prop x) = True
+                                    isCnfHelp2 (Neg x)  = True && (isCnfHelp2 x)
+                                    isCnfHelp2 (Dsj x)  = and (map isCnfHelp2 x)
+                                    isCnfHelp2 (Cnj x)  = False
+                                  in and (map isCnfHelp2 fs)
+            isCnfHelp1 _ = True
+          in (isArrowFree x) && (isNegNegFree x) && (isCnfHelp1 x)
 
 -- Test function that checks if a Formula and its cnf are equivalent and that its cnf is actually cnf
 -- Use with f and (cnf (nnf (arrowfree f))) as inputs
