@@ -35,6 +35,8 @@ genIntList = liftM (randomRs (0, 10000)) newStdGen
 isPermutation :: Ord a => [a] -> [a] -> Bool
 isPermutation a b = length a == length b &&
                     sort a == sort b
+                    
+
 
 {- Assignment 4b
   Alternative version, conform to the assignment request input type, but a little
@@ -57,3 +59,8 @@ isPermutationSLow _  [] = False
 isPermutationSlow (h:t) b
   | (elem h) b = isPermutationSlow t (delete h b)
   | otherwise  = False
+  
+  
+  
+{- Exercise 7 -}
+cnfTest i = testForms i (\form -> equiv form (cnf form))
