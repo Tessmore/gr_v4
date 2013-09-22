@@ -25,6 +25,22 @@ import Control.Monad
 -- Generate random integer lists
 genIntList :: IO [Int]
 genIntList = liftM (randomRs (0, 10000)) newStdGen
+{- Another solution:
+
+  getIntList :: IO [Int]
+  getIntList = do 
+				d <- getRandomInt 8
+				n <- getRandomInt 5
+				getIntL d n
+
+  getIntL :: Int -> Int -> IO [Int]
+  getIntL _ 0 = return []
+  getIntL d n = do 
+			f <- getRandomInt d
+			fs <- getIntL d (n-1)
+			return (f:fs)
+-}
+
 
 {- Assignment 4
   Time spent 2 minutes
