@@ -1,23 +1,24 @@
 {-
-Week 3 assignment
+  Week 3 assignment
 
-Group GR_V_4: 
+  Group GR_V_4: 
 
-  Fabien Tesselaar, 
-  Tim Gosen, 
-  Lulu Zhang, 
-  Tina Churlinovska
+    Fabien Tesselaar, 
+    Tim Gosen, 
+    Lulu Zhang, 
+    Tina Churlinovska
 
 -}
 
 module SolWeek3 where
 
 import Data.List
+import System.Random
+import Control.Monad
+import SolWeek2
 import Week2
 import Week3
 import Techniques
-import System.Random
-import Control.Monad
 
 {-
   Assignment 3
@@ -100,7 +101,6 @@ isPermutationSLow _  [] = False
 isPermutationSlow (h:t) b
   | h `elem` b = isPermutationSlow t (delete h b)
   | otherwise  = False
-  
 
 {- 
   Assignment 5
@@ -115,27 +115,35 @@ isPermutationSlow (h:t) b
     Symmetry
   
   Facts for lists to be a permutation of eachother:
+    - A list is always permutation of itself
     - The length must be equal
     - Must contain all the same items (i.e if an item of set A is not in set B
       it cannot be a permutation)
     
-  
-  + Test whether 2 random integer lists are permutations of each other
-  + Two random integer lists are genetated from getIntList2 method.
 -}
 
 {- 
   Helper function for testing the permutations
-  
   It generates a list of random length between 0 and 6
 -}
-
 testPermutationGen = do
                       length <- getRandomInt 6
                       genIntListIO length
 
-testPermutation :: IO ()
-testPermutation =  do 
+-- A list should always be a permutation of itself
+testPermutation1 = do
+                    m <- testPermutationGen
+                    return (isPermutation m m)
+
+-- Different lengths cannot be a permutation
+testPermutation2 = do
+                    m <- genIntListIO 4
+                    n <- genIntListIO 5
+                    return (isPermutation m n == False)
+
+-- Check for random lists
+testPermutation3 :: IO ()
+testPermutation3 =  do 
                      m <- testPermutationGen
                      n <- testPermutationGen
                      if isPermutation m n
@@ -148,6 +156,7 @@ testPermutation =  do
   Use the random formula generator from the Techniques slides to test your 
   CNF program of last week.
 
-  * See report_assignment6.pdf
+  * report_assignment6.pdf
 -}
+
 cnfTest i = testForms i (\form -> equiv form (cnf form))
