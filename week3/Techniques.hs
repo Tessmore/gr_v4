@@ -75,7 +75,7 @@ parse :: String -> [Form]
 parse s = [ f | (f,_) <- parseForm (lexer s) ]
 
 getRandomInt :: Int -> IO Int
-getRandomInt n = getStdRandom (randomR (0,n))
+getRandomInt n = getStdRandom (randomR (0, n))
 
 getRandomF :: IO Form
 getRandomF = do d <- getRandomInt 4
