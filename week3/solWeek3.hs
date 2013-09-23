@@ -160,3 +160,11 @@ testPermutation3 =  do
 -}
 
 cnfTest i = testForms i (\form -> equiv form (cnf form))
+
+{- 
+  Assignment 7
+-} 
+
+-- Similar to generating genRanInt, but for characters
+genRanChar :: IO Char
+genRanChar = getStdRandom (randomR ('a', 'z'))
