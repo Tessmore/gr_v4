@@ -77,19 +77,19 @@ data Form = Prop Name
           deriving Eq
 
 instance Show Form where 
-  show (Prop x)       = show x
-  show (Neg f)        = '-' : show f 
-  show (Cnj fs)       = "*(" ++ showLst fs ++ ")"
-  show (Dsj fs)       = "+(" ++ showLst fs ++ ")"
-  show (Impl f1 f2)   =  "(" ++ show f1 ++ "==>" 
-                             ++ show f2 ++ ")"
-  show (Equiv f1 f2)  =  "(" ++ show f1 ++ "<=>" 
-                             ++ show f2 ++ ")"
+  show (Prop x)   = show x
+  show (Neg f)    = '-' : show f 
+  show (Cnj fs)     = "*(" ++ showLst fs ++ ")"
+  show (Dsj fs)     = "+(" ++ showLst fs ++ ")"
+  show (Impl f1 f2)  = "(" ++ show f1 ++ "==>" 
+                           ++ show f2 ++ ")"
+  show (Equiv f1 f2)  = "(" ++ show f1 ++ "<=>" 
+                           ++ show f2 ++ ")"
 
 showLst,showRest :: [Form] -> String
-showLst []      = ""
-showLst (f:fs)  = show f ++ showRest fs
-showRest []     = ""
+showLst [] = ""
+showLst (f:fs) = show f ++ showRest fs
+showRest [] = ""
 showRest (f:fs) = ' ': show f ++ showRest fs
 
 p = Prop 1
@@ -128,7 +128,6 @@ eval [] (Prop c)    = error ("no info: " ++ show c)
 eval ((i,b):xs) (Prop c)
      | c == i    = b
      | otherwise = eval xs (Prop c)
-     
 eval xs (Neg f)  = not (eval xs f)
 eval xs (Cnj fs) = all (eval xs) fs
 eval xs (Dsj fs) = any (eval xs) fs
@@ -165,3 +164,4 @@ nnf (Neg (Dsj fs)) = Cnj (map (nnf.Neg) fs)
 lighter, heavier :: Int
 lighter = 3
 heavier = 0
+
