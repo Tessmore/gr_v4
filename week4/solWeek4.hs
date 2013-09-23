@@ -1,7 +1,6 @@
-module Week4
+module SolWeek4
 
 where
 
-import Data.List
-
+import Week4
 
