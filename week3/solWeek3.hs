@@ -20,6 +20,10 @@ import Week2
 import Week3
 import Techniques
 
+-- Allow negative numbers
+getRandomZ :: IO Int
+getRandomZ = getStdRandom (randomR (-10, 10)) -- could be minBound, maxBound
+
 {-
   Assignment 3
   
@@ -58,15 +62,20 @@ genIntListFinite n = take n genIntListNonIO
   length. We can imperatively add one at a time, untill the list is of requested
   length. So it is basically more a work-around to not use IO.
 -}
+genIntList :: IO [Int]
+genIntList = do 
+              length <- getRandomInt 10  -- length random list (10 for checking purposes)
+              genIntListIO length        -- create list  
+
 genIntListIO :: Int -> IO [Int]
 genIntListIO n
   | n > 0 = do 
-              head <- getRandomInt maxBound
+              head <- getRandomZ
               tail <- genIntListIO (n-1)
               return (head : tail)
   | otherwise = return []
 
-  
+    
 {- 
   Assignment 4 : Permuations
   Time spent 2 minutes

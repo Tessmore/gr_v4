@@ -198,4 +198,3 @@ fordown2 = for2 . reverse
 fordown3 :: [a] -> (a -> b -> c -> d -> (b,c,d)) 
                       -> b -> c -> d -> d 
 fordown3 = for3 . reverse
-
