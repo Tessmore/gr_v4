@@ -2,6 +2,7 @@ module SolWeek4
 
 where
 
+import Data.List
 import Week4
 import SetOrd
 
@@ -20,7 +21,7 @@ setIntersection (Set []) _  = (Set [])
 setIntersection  _ (Set []) = (Set [])
 setIntersection (Set (x:xs)) (Set y)
   | inSet x (Set y) = insertSet x (setIntersection (Set xs) (Set y))
-  | otherwise = setIntersection (Set xs) (Set y)
+  | otherwise       = setIntersection (Set xs) (Set y)
 
 -- Union : All distinct elements of A and B
 setUnion :: (Ord a) => Set a -> Set a -> Set a
@@ -41,16 +42,37 @@ setDifference (Set (x:xs)) (Set y)
 {- 
   Assignment 4
   
+  Create transitive closusre of a list of pairs
+-}
+
 type Rel a = [(a,a)]
 
 infixr 5 @@
 
+-- Finds the transitive pair needed
 (@@) :: Eq a => Rel a -> Rel a -> Rel a
-
 r @@ s =
   nub [(x,z) | (x,y) <- r, (w,z) <- s, y == w]
 
+{-
+  Take the first item, find the required closure for all other elements in the
+  list. Continue with the next element in list to find combinations with 
+  next nodes (no need to look at the previous node, as it is already done by
+  looking forward with the earlier check)
+  
+  "nub" is not actually needed, but just in case duplicate pairs are provided
+  
+  Reference: 
+    http://en.wikipedia.org/wiki/File:Transitive-closure.svg
+-}
+trClos :: Ord a => Rel a -> Rel a
+trClos [] = []
+trClos (x:xs) = nub (x : ([x] @@ xs) ++ (trClos xs))
 
---trClos :: Ord a => Rel a -> Rel a
-
+{- 
+  Assignment 5
+  
+  Properties to test
+  
+  Need an isClosure function (i.e transivity check or someth)
 -}
