@@ -75,4 +75,14 @@ trClos (x:xs) = nub (x : ([x] @@ xs) ++ (trClos xs))
   Properties to test
   
   Need an isClosure function (i.e transivity check or someth)
+
+  * Test with some known sets (just to start)
+  
+  * Result set should be transitive
+  * If already transitive, shouldn't be expanded
+  * All S = sub-elements/lists, if S is transitive, then Result set should 
+    be smallest possible set
+  
 -}
+
+testTrClos1 = trClos [(1,1), (1,2), (1,3), (2,3), (3,1)] == [(1,1), (1,2), (1,3), (2,1), (2,3), (3,1), (3,2)]
