@@ -16,16 +16,16 @@ import SetOrd
 -}
 getSetInt :: IO (Set Int)
 getSetInt = do 
-				d <- getRandomInt 10
-				n <- getRandomInt 10
-				getSetI d n
+		d <- getRandomInt 10
+		n <- getRandomInt 10
+		getSetI d n
 
 getSetI :: Int -> Int -> IO (Set Int)
 getSetI _ 0 = return (Set [])
 getSetI d n = do 
-			f <- getRandomInt d
-			Set fs <- getSetI d (n-1)
-			return (Set (f:fs))
+		f <- getRandomInt d
+		Set fs <- getSetI d (n-1)
+		return (Set (f:fs))
 			
 			
 {-
