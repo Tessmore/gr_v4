@@ -3,10 +3,31 @@ module SolWeek4
 where
 
 import Data.List
+import Techniques
 import Week4
 import SetOrd
 
+{-
+  Assignment 2
+  
+   Implement a random data generator for the datatype Set Int
+  
+  Indication time spent: 45min
+-}
+getSetInt :: IO (Set Int)
+getSetInt = do 
+				d <- getRandomInt 10
+				n <- getRandomInt 10
+				getSetI d n
 
+getSetI :: Int -> Int -> IO (Set Int)
+getSetI _ 0 = return (Set [])
+getSetI d n = do 
+			f <- getRandomInt d
+			Set fs <- getSetI d (n-1)
+			return (Set (f:fs))
+			
+			
 {-
   Assignment 3
   
