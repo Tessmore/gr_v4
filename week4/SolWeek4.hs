@@ -25,8 +25,8 @@ getSetI _ 0 = return (Set [])
 getSetI d n = do 
 		f <- getRandomInt d
 		Set fs <- getSetI d (n-1)
-		return (Set (f:fs))
-			
+		return (Set (map head (group (sort(f:fs)))))
+-- Changed this to (Set (map head (group(sort(f:fs))))) instead of (Set (f:fs)) because sets need to be sorted and without duplicates... T
 			
 {-
   Assignment 3
