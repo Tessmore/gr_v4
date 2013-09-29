@@ -16,18 +16,21 @@ import SetOrd
 -}
 getSetInt :: IO (Set Int)
 getSetInt = do 
-		d <- getRandomInt 10
-		n <- getRandomInt 10
-		getSetI d n
+  d <- getRandomInt 10
+  n <- getRandomInt 10
+  getSetI d n
 
 getSetI :: Int -> Int -> IO (Set Int)
 getSetI _ 0 = return (Set [])
 getSetI d n = do 
-		f <- getRandomInt d
-		Set fs <- getSetI d (n-1)
-		return (Set (map head (group (sort(f:fs)))))
--- Changed this to (Set (map head (group(sort(f:fs))))) instead of (Set (f:fs)) because sets need to be sorted and without duplicates... T
-			
+  f <- getRandomInt d
+  Set fs <- getSetI d (n-1)
+  return (Set (map head (group (sort(f:fs)))))
+
+-- Changed this to (Set (map head (group(sort(f:fs))))) 
+-- instead of (Set (f:fs)) because sets need to be sorted and without duplicates
+
+
 {-
   Assignment 3
   
@@ -64,6 +67,8 @@ setDifference (Set (x:xs)) (Set y)
   Assignment 4
   
   Create transitive closusre of a list of pairs
+  
+  Time spent 2 hours
 -}
 
 type Rel a = [(a,a)]
@@ -76,19 +81,26 @@ r @@ s =
   nub [(x,z) | (x,y) <- r, (w,z) <- s, y == w]
 
 {-
+  One time to go through all the elements in the list.
+  Second time to include the additional closures that are not directly linked
+  
   Take the first item, find the required closure for all other elements in the
   list. Continue with the next element in list to find combinations with 
   next nodes (no need to look at the previous node, as it is already done by
   looking forward with the earlier check)
   
-  "nub" is not actually needed, but just in case duplicate pairs are provided
+  Then it needs to do it one more time to get all the 
   
   Reference: 
     http://en.wikipedia.org/wiki/File:Transitive-closure.svg
 -}
+
 trClos :: Ord a => Rel a -> Rel a
-trClos [] = []
-trClos (x:xs) = nub (x : ([x] @@ xs) ++ (trClos xs))
+trClos r = nub (trClosHelper (trClosHelper r))
+
+trClosHelper :: Ord a => Rel a -> Rel a
+trClosHelper [] = []
+trClosHelper (x:xs) = x : ([x] @@ xs) ++ trClos xs
 
 {- 
   Assignment 5
@@ -106,4 +118,9 @@ trClos (x:xs) = nub (x : ([x] @@ xs) ++ (trClos xs))
   
 -}
 
-testTrClos1 = trClos [(1,1), (1,2), (1,3), (2,3), (3,1)] == [(1,1), (1,2), (1,3), (2,1), (2,3), (3,1), (3,2)]
+-- Haskell has built in isTransitive
+-- isTransitive r = and [((x `po` y) && (y `po` z)) `implies` (x `po` z) | x <- set, y <- set, z <- set]
+
+  
+--testTrClos1 = isTransitive (trClos [(1,1), (1,2), (1,3), (2,3), (3,1)])
+testTrClos2 = trClos [(1,1), (1,2), (1,3), (2,3), (3,1)] == [(1,1), (1,2), (1,3), (2,1), (2,3), (3,1), (3,2)]
