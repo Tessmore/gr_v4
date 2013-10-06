@@ -127,4 +127,97 @@ Next main will start generating a "problem" (which is removing filled positions 
 
 Finally main will try to solve the generated problem using solveShowNs, which calls solveNs, of which we proved that it will call functions that respect NRC constraints so the solving of the problem also respects NRC contstraints.
 
-Concluding, we did not need to modify anything. All randomly generated, then minimalized and solved sudokus respect the extra constraints because they are implemented in functions that are used by the functions in the main of the random generator.
+Concluding, we did not need to modify anything. All randomly generated, then minimalized and solved sudokus respect the extra constraints because they are implemented in functions that are used by the functions in the main of the random generator. So calling main in RandomSudoku.hs now complies with the exercise.
+
+# Assignment 5.
+We need to check whether this problem is minimal, which means no more position can be erased otherwise, the solution will not be unique. In this test, we will judge whether the solution is still unique after we erase one filled position every time. If it is unique, the problem is not minimal; if it isn't, erase other position, and judge whether the solution is unique until every position have been erased once. If the solution to this problem will not be unique every time we erase one filled position, this problem is minimal. 
+
+Run nr 1
+*Sudoku> testSudoNRC 
++-------+-------+-------+
+|       | 6     |   3   |
+| 4   5 | 7   3 |       |
+|     1 |     9 |       |
++-------+-------+-------+
+|       |       |       |
+|       |       |   8 3 |
+| 3   8 |       |       |
++-------+-------+-------+
+|       | 9     |     1 |
+|       | 3 2 5 |       |
+| 7     |       |       |
++-------+-------+-------+
++-------+-------+-------+
+| 8 9 7 | 6 1 2 | 4 3 5 |
+| 4 6 5 | 7 8 3 | 2 1 9 |
+| 2 3 1 | 4 5 9 | 8 7 6 |
++-------+-------+-------+
+| 1 2 9 | 8 3 4 | 6 5 7 |
+| 6 5 4 | 2 9 7 | 1 8 3 |
+| 3 7 8 | 5 6 1 | 9 2 4 |
++-------+-------+-------+
+| 5 4 2 | 9 7 8 | 3 6 1 |
+| 9 1 6 | 3 2 5 | 7 4 8 |
+| 7 8 3 | 1 4 6 | 5 9 2 |
++-------+-------+-------+
+"solver is right and generated sudoku problem is minimal"
+
+Run 2
+*Sudoku> testSudoNRC 
++-------+-------+-------+
+|       | 8   2 |       |
+|     7 |       |     3 |
+| 4 6   |       |       |
++-------+-------+-------+
+|       |       |       |
+|   2   |       |       |
+|       | 6 9   |   4   |
++-------+-------+-------+
+|       |     5 | 7   4 |
+|       | 9 7   |       |
+|       |   3   |   6   |
++-------+-------+-------+
++-------+-------+-------+
+| 1 5 3 | 8 4 2 | 9 7 6 |
+| 2 8 7 | 5 6 9 | 4 1 3 |
+| 4 6 9 | 3 1 7 | 8 2 5 |
++-------+-------+-------+
+| 9 1 4 | 2 8 3 | 6 5 7 |
+| 8 2 6 | 7 5 4 | 1 3 9 |
+| 3 7 5 | 6 9 1 | 2 4 8 |
++-------+-------+-------+
+| 6 3 8 | 1 2 5 | 7 9 4 |
+| 5 4 2 | 9 7 6 | 3 8 1 |
+| 7 9 1 | 4 3 8 | 5 6 2 |
++-------+-------+-------+
+"solver is right and generated sudoku problem is minimal"
+
+Run 3
+*Sudoku> testSudoNRC 
++-------+-------+-------+
+|       |       |       |
+|       | 9 2 6 |       |
+| 6 5 7 |       |       |
++-------+-------+-------+
+|     2 |   1   |     9 |
+|       |   8   |       |
+|       |       | 3     |
++-------+-------+-------+
+|       |       | 7     |
+| 2   3 |       |   1   |
+|     4 | 7     |   2   |
++-------+-------+-------+
++-------+-------+-------+
+| 4 2 9 | 8 7 5 | 6 3 1 |
+| 3 8 1 | 9 2 6 | 4 7 5 |
+| 6 5 7 | 3 4 1 | 2 9 8 |
++-------+-------+-------+
+| 7 6 2 | 4 1 3 | 5 8 9 |
+| 9 3 5 | 6 8 7 | 1 4 2 |
+| 1 4 8 | 2 5 9 | 3 6 7 |
++-------+-------+-------+
+| 8 9 6 | 1 3 2 | 7 5 4 |
+| 2 7 3 | 5 9 4 | 8 1 6 |
+| 5 1 4 | 7 6 8 | 9 2 3 |
++-------+-------+-------+
+"solver is right and generated sudoku problem is minimal"

@@ -113,4 +113,20 @@ main = do [r] <- rsolveNs [emptyN]
           showNode s
           solveShowNs [s]
 
-             
+testSudoNRC :: IO()
+testSudoNRC = do [r] <- rsolveNs [emptyN]
+                 s <- genProblem r
+                 showNode s
+                 t <- solveShowNs [s]
+                 if (testMinimal s) && length t > 0
+                 then print ("solver is right and generated sudoku problem is minimal")
+                 else error ("error")
+
+testMinimal :: Node -> Bool
+testMinimal s = testMini s (filledPositions (fst s))
+
+testMini :: Node -> [(Row,Column)] -> Bool
+testMini nod [] = True
+testMini nod ((r,c):rcs) | uniqueSol nod' = False
+                         | otherwise = testMini nod rcs
+             where nod' = eraseN nod (r,c) 
