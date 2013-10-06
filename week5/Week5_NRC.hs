@@ -189,6 +189,8 @@ invar5 p f x y z u v =
    then error "invar5"
    else (x',y',z',u',v')
 
+
+{- This is the start of the sudoku part -}
 type Row    = Int 
 type Column = Int 
 type Value  = Int
@@ -198,9 +200,11 @@ positions, values :: [Int]
 positions = [1..9]
 values    = [1..9] 
 
+{- These are the regular 9 3x3 blocks for sudokus -}
 blocks :: [[Int]]
 blocks = [[1..3],[4..6],[7..9]]
 
+{- These are the new 4 3x3 blocks for NRC sudokus -}
 extraBlocks :: [[Int]]
 extraBlocks = [[2..4],[6..8]]
 
@@ -273,6 +277,7 @@ freeInColumn :: Sudoku -> Column -> [Value]
 freeInColumn s c = 
   freeInSeq [ s (i,c) | i <- positions ]
 
+{- FreeInSubgrid now respects both types of grids and intersects the possible values of that position such that it accounts for the constraints set by both types of blocks -}
 freeInSubgrid :: Sudoku -> (Row,Column) -> [Value]
 freeInSubgrid s (r,c) = (freeInSeq (subGrid s (r,c) 1)) `intersect` (freeInSeq (subGrid s (r,c) 2))
 
@@ -293,10 +298,15 @@ colInjective :: Sudoku -> Column -> Bool
 colInjective s c = injective vs where 
    vs = filter (/= 0) [ s (i,c) | i <- positions ]
 
+{- We modified the subgridInjective function so that it can differentate the type of subgrid (original 9 vs new 4) -}
 subgridInjective :: Sudoku -> (Row,Column) -> Int -> Bool
 subgridInjective s (r,c) blockType = injective vs where 
    vs = filter (/= 0) (subGrid s (r,c) blockType)
 
+{- Consistent checks if possible solutions are still consistent with the constraints set by the (NRC) sudoku rules 
+   The first occurence of subgridInjective checks that the original constraints for the 9 3x3 blocks are met
+   The second occurence of subgridInjective checks that the new constraints for the 4 3x3 blocks are met
+-}
 consistent :: Sudoku -> Bool
 consistent s = and $
                [ rowInjective s r |  r <- positions ]
