@@ -8,7 +8,7 @@ module Sudoku where
 
 import Data.List
 import System.Random
-import Week5
+import Week5_NRC
 
 emptyN :: Node
 emptyN = (\ _ -> 0,constraints (\ _ -> 0))
