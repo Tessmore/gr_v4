@@ -59,7 +59,6 @@ of a sorted list, but this time using mergeSrtSplit
 
     
 # Assignment 3.
-
 Given a normal sudoku solver, we must formalize extra constraints so it can
 solve special NRC sudoku's
 
@@ -120,3 +119,12 @@ Using `solveAndShow example6` results in the following:
     | 9 8 3 | 1 4 7 | 5 6 2 |
     | 1 4 2 | 5 6 3 | 8 9 7 |
     +-------+-------+-------+
+
+# Assignment 4.
+The mainfunction in RandonSudoku start with a generating a random sudoku and then one by one removing filled positions while constantly checking if it is still a unique solution. The point is that generating the random sudoku makes use of emptyN which calls the  function constraints, which calls freeAtPos, which calls the modified function freeAtSubgrid. The result is that the generated (but filled) sudoku is already conform to NRC Sudoku constraints. 
+
+Next main will start generating a "problem" (which is removing filled positions as long as there is a unique solution). genProblem calls minimalize, which uses uniquesol, which calls solveNs, which is in the modified file. solveNs calls succNode, which calls extendNode, which call constraints again. And we've already shown that constraints now respects the NRC Sudoku constraints. Hence genProblem respects NRC constraints. 
+
+Finally main will try to solve the generated problem using solveShowNs, which calls solveNs, of which we proved that it will call functions that respect NRC constraints so the solving of the problem also respects NRC contstraints.
+
+Concluding, we did not need to modify anything. All randomly generated, then minimalized and solved sudokus respect the extra constraints because they are implemented in functions that are used by the functions in the main of the random generator.
