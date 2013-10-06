@@ -17,7 +17,7 @@ mergeSrt :: Ord a => [a] -> [a]
 mergeSrt [] = []
 mergeSrt (x:xs) = merge [x] (mergeSrt xs)
 
--- Programs?
+-- Short test
 mergeSrtTest1 = mergeSrt "asdfsakdfjsakdfjskdfjsdf" 
 mergeSrtTest2 = mergeSrt [9,4,7,2,9,4,2,4,8,6,3,1,0,7,2,3,3,2] 
 

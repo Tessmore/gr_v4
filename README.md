@@ -5,5 +5,4 @@ Group members :
 
 * Tim Gosen
 * Lulu Zhang
-* Tina Curlinovksa
 * Fabiën Tesselaar
