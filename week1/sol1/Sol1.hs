@@ -2,7 +2,7 @@
 
 Group GR_V_4: 
 
-  Fabiën Tesselaar, 
+  FabiÃ«n Tesselaar, 
   Tim Gosen, 
   Lulu Zhang, 
   Tina Churlinovska
@@ -77,6 +77,8 @@ substring (x:xs) (y:ys)
   | prefix (x:xs) (y:ys) = True
   | substring (x:xs) ys = True
   | otherwise = False
+-- VVZ: could the above be written with simple logic instead of a multiple dispatch construct? yes, it could!
+-- VVZ: substring (x:xs) (y:ys) = prefix (x:xs) (y:ys) || substring (x:xs) ys
   
 -- 1.20 Returns a list of the corresponding inner list lengths.
 lengths :: [[a]] -> [Int]
@@ -85,3 +87,4 @@ lengths = map length
 -- 1.21 Sum the list of lists length
 sumLengths :: [[a]] -> Int
 sumLengths list = sum (lengths list)
+-- VVZ: or simply 'sumLengths = sum . lengths'
