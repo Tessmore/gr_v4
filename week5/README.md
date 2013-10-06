@@ -102,7 +102,7 @@ Another adjustment is that `FreeInSubgrid` now respects both types of grids. Thi
     freeInSubgrid s (r,c) = (freeInSeq (subGrid s (r,c) 1)) `intersect` (freeInSeq (subGrid s (r,c) 2))
 
 
-## Solution
+### Solution
 
 Using `solveAndShow example6` results in the following:
 
