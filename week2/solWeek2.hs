@@ -257,10 +257,16 @@ isCorrectCnf :: Form -> Form -> Bool
 isCorrectCnf f cnfF = (isCnf cnfF) && (equiv f cnfF)
 
 -- Test function to check all conversion to CNF are correct.
+-- VVZ: do you like to repeat yourselves? do you like to repeat yourselves?
+-- VVZ: why not write one function defined as "cnf . nnf . arrowfree" and use it everywhere?
 cnfTest1 = isCnf (cnf (nnf (arrowfree formTest1)))
 cnfTest2 = isCnf (cnf (nnf (arrowfree formTest2)))
 cnfTest3 = isCnf (cnf (nnf (arrowfree formTest3)))
 cnfTest4 = isCnf (cnf (nnf (arrowfree formTest4)))
+
+-- VVZ: You also miss another function that would 'flatten' nested conjunctions and disjunctions. The formulae on the slides used associativity and hence assumed the flattener of x & (y & z) to x & y & z in the head of the reader, but in the implementation your rewritings could make quite a mess of the structure of conjunction/disjunction lists, not to mention that the input is 'any formula', so it can be already messed up.
+-- VVZ: cnf (nnf (arrowfree (Cnj [Cnj [p,q,p], q])))
+-- VVZ: I expect to see *(1 2 1 2), not *(*(1 2 1) 2)
 
 --Test fuction that checks all.
 testAllCnf = cnfTest1 && cnfTest2 && cnfTest3 && cnfTest4
