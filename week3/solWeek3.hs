@@ -86,6 +86,7 @@ genIntListIO n
 isPermutation :: Ord a => [a] -> [a] -> Bool
 isPermutation a b = length a == length b &&
                     sort a == sort b
+-- VVZ: does it make sense to check for both conditions, or one always entails the other? Which one?
 
 {- 
   Assignment 4b
@@ -120,6 +121,7 @@ isPermutationSlow (h:t) b
 
   Properties: 
     Transitivity,
+-- VVZ: it is spelled "reflexivity"
     Reflictivity,
     Symmetry
   

@@ -45,6 +45,7 @@ data Shape = NoTriangle | Equilateral
             | Isosceles | Rectangular | Other deriving (Eq, Show)
 
 triangle :: Integer -> Integer -> Integer -> Shape
+-- VVZ: the code is nicely symmetrical, could we write less of it by sorting the triple?
 triangle a b c
   | a+b < c || b+c < a || a+c < b                            = NoTriangle
   | a == b && b == c                                         = Equilateral
@@ -102,6 +103,7 @@ testRectangularTriangle = filter (isRectangle) (map triangle3 (replicateM 3 [0..
   For known side lengths we expect certain output
   We also want to test if it does not return a certain shape it cannot possibly be
 -}
+-- VVZ: no automated testing? :-(
 
 testTriangle1a = triangle 1 2 5    == NoTriangle
 testTriangle1b = triangle 5 2 5    /= NoTriangle
@@ -142,6 +144,8 @@ testAllTriangles = testTriangle1a &&
 -- So there should not be any solution
 contradiction :: Form -> Bool
 contradiction f = not (any (\ v -> eval v f) (allVals f))
+-- VVZ: I have seen this code after "not" before. have you? be lazy and reuse your old functions!
+-- VVZ: contradiction = not . satisfiable
 
 -- Testing (must be true)
 contradictionTest1 = contradiction (Cnj [(Impl p q), (Impl p (Neg q))]) == False
@@ -183,6 +187,7 @@ equiv f1 f2 = tautology (Equiv f1 f2)
 equivTest1 = equiv (Cnj [Dsj [p, q], Dsj [p, r]]) (Cnj [Dsj [p, q], Dsj [p, r]]) -- Identical formula
 equivTest2 = equiv (Cnj [Dsj [p, q], Dsj [p, r]]) (Cnj [Dsj [p, r], Dsj [p, q]]) -- Rearranged formula
 
+-- VVZ: very good!
 
 {-
  - Exercise 2.3
@@ -234,10 +239,12 @@ isNegNegFree (_) = True
 -- Test function that guarantees that a formula is in cnf by checking the rules for cnf
 isCnf :: Form -> Bool
 isCnf x = let
+			-- VVZ: the next line is incorrect: for CNF inside the top level conjunctions are disjunctions, not CNFs
             isCnfHelp1 (Cnj fs) = and (map isCnfHelp1 fs)
             isCnfHelp1 (Dsj fs) = let
                                     isCnfHelp2 (Prop x) = True
                                     isCnfHelp2 (Neg x)  = True && (isCnfHelp2 x)
+                                    -- VVZ: the next line is incorrect: there are no disjunctions allowed inside disjunctions in the CNF definition
                                     isCnfHelp2 (Dsj x)  = and (map isCnfHelp2 x)
                                     isCnfHelp2 (Cnj x)  = False
                                   in and (map isCnfHelp2 fs)

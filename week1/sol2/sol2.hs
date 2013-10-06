@@ -82,8 +82,11 @@ unique p xs = length (filter p xs) == 1
 -- Exercise 2.52 Define a function parity :: [Bool] -> Bool that gives True for parity xs just in case an even number of the xss equals True.
 parity :: [Bool] -> Bool
 parity xs = length (filter (\b -> b) xs) `rem` 2 == 0
+-- VVZ: does this length-filter thing look familiar? it should! learn from Haskell to BE LAZY and pipe old & known functions
+-- VVZ: parity = even . length . filter (== True)
 
 -- Exercise 2.53 Define a function evenNR :: (a -> Bool) -> [a] -> Bool that gives True for evenNR p xs just in case an even number of the xss have property p. (Use the parity function from the previous exercise.)
 
 evenNR :: (a -> Bool) -> [a] -> Bool
 evenNR p xs = parity (map p xs)
+-- VVZ: or just 'evenNR = parity . map'
