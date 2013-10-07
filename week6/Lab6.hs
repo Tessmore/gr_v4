@@ -4,17 +4,48 @@ where
 import Data.List
 import System.Random
 import Week6
-      
-      
+       
 {- 
   Assignment 1.
   Time spent:
-  
+    
   Function that does modular exponentiation of x^y in polynomial time, by
-  repeatedly squaring modulo N
-
+  repeatedly squaring modulo N.
 -}
-exM :: Integer -> Integer -> Integer -> Integer 
+                   
+-- Alternative method by Lulu
+-- Somehow very similar to week6 version, but stops computing at very big numbers?
+exM' :: Integer -> Integer -> Integer -> Integer
+exM' _ 0 1 = 0
+exM' _ 0 n = 1
+exM' x 1 n = rem x n
+exM' x y n = let k = exM' x (y `div` 2) n 
+              in if even y
+                  then k*k   `rem` n
+                  else k*k*x `rem` n
+
+
+-- Alternative method by Tim
+-- Source used for detailed explenation: 
+--    http://www.tricki.org/article/To_work_out_powers_mod_n_use_repeated_squaring
+exMT2 :: Integer -> Integer -> Integer -> Integer
+exMT2 x y n = let 
+                squares = squareListMod x y n
+                factOf2 = toFactOf2 y 
+               in product (zipWith helper squares factOf2) `mod` n where 
+                helper x y = if y then x else 1
+ 
+squareListMod :: Integer -> Integer -> Integer -> [Integer]
+squareListMod x 0 _ = []
+squareListMod x y n = squareList' x 0 y n where
+ squareList' x k y n = if (2^k) <= y then (x^(2^k) `mod` n) : (squareList' x (k+1)  y n)
+                       else []
+
+toFactOf2 :: Integer -> [Bool]
+toFactOf2 x = decToBin' x
+ where
+decToBin' 0 = []
+decToBin' y = let (a,b) = quotRem y 2 in [(b == 1)] ++ decToBin' a
 
 
 {- 
@@ -24,6 +55,7 @@ exM :: Integer -> Integer -> Integer -> Integer
   Check that your implementation is more efficient than expM by running
   relevant tests and documenting the results.
 
+  
 -}  
 
 
@@ -44,7 +76,10 @@ exM :: Integer -> Integer -> Integer -> Integer
 -}
 
 composites :: [Integer]
+composites = composites' [4..]
 
+--composites' (n:ns) = n : composites'
+--  (filter (\ m -> rem m n /= 0) ns)
 
 
 {- 

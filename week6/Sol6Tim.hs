@@ -22,8 +22,8 @@ exMT2 x y n = let
 squareListMod :: Integer -> Integer -> Integer -> [Integer]
 squareListMod x 0 _ = []
 squareListMod x y n = squareList' x 0 y n where
- squareList' x k y n = if (2^k) < y then (x^(2^k) `mod` n) : (squareList' x (k+1)  y n)
-		     else []
+ squareList' x k y n = if (2^k) <= y then (x^(2^k) `mod` n) : (squareList' x (k+1)  y n)
+                       else []
 
 toFactOf2 :: Integer -> [Bool]
 toFactOf2 x = decToBin' x
