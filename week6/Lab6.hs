@@ -8,22 +8,26 @@ import Week6
 {- 
   Assignment 1.
   Time spent:
-  
-  Source used for detailed explenation: 
-    http://www.tricki.org/article/To_work_out_powers_mod_n_use_repeated_squaring
-  
+    
   Function that does modular exponentiation of x^y in polynomial time, by
   repeatedly squaring modulo N.
 -}
                    
-exM' :: Integer -> Integer -> Integer -> Integer 
-exM' x 0 n = 1
-exM' x y n = let k = exM' x (y `div` 2) n
-               in if (even y)
-                    then     (k * k) `mod` n
-                    else (x * k * k) `mod` n
-                
+-- Alternative method by Lulu
+-- Somehow very similar to week6 version, but stops computing at very big numbers?
+exM' :: Integer -> Integer -> Integer -> Integer
+exM' _ 0 1 = 0
+exM' _ 0 n = 1
+exM' x 1 n = rem x n
+exM' x y n = let k = exM' x (y `div` 2) n 
+              in if even y
+                  then k*k   `rem` n
+                  else k*k*x `rem` n
 
+
+-- Alternative method by Tim
+-- Source used for detailed explenation: 
+--    http://www.tricki.org/article/To_work_out_powers_mod_n_use_repeated_squaring
 exMT2 :: Integer -> Integer -> Integer -> Integer
 exMT2 x y n = let 
                 squares = squareListMod x y n
@@ -71,8 +75,11 @@ decToBin' y = let (a,b) = quotRem y 2 in [(b == 1)] ++ decToBin' a
 
 -}
 
---composites :: [Integer]
+composites :: [Integer]
+composites = composites' [4..]
 
+--composites' (n:ns) = n : composites'
+--  (filter (\ m -> rem m n /= 0) ns)
 
 
 {- 
