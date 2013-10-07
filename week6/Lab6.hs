@@ -24,13 +24,12 @@ exM' x y n = let k = exM' x (y `div` 2) n
                     else (x * k * k) `mod` n
 
 
+-- poep 3 4 37 53 => poep 3^4 16
 poep :: Integer -> Integer -> Integer -> Integer -> [Integer]
 poep x k y n
-  | x `rem` n <= y = x `rem` n : poep (x^k) (k*k) y n
+  | x `rem` n <= y = x `rem` n : poep (x^k) (2*k) y n
   | otherwise = []
                 
-
---3, 3*3, 3*3*3*3
 
 {- 
   Assignment 2.
