@@ -4,6 +4,12 @@ where
 import Data.List
 import System.Random
 
+{-
+Assignment 1:
+ Time spent: 45 min
+
+ Implement a function that does modular exponentiation of x^y in polynomial time
+-}
 
 exM :: Integer -> Integer -> Integer -> Integer
 exM x y n = if rem y 2 /= 0
