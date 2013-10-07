@@ -22,14 +22,27 @@ exM' x y n = let k = exM' x (y `div` 2) n
                in if (even y)
                     then     (k * k) `mod` n
                     else (x * k * k) `mod` n
-
-
--- poep 3 4 37 53 => poep 3^4 16
-poep :: Integer -> Integer -> Integer -> Integer -> [Integer]
-poep x k y n
-  | x `rem` n <= y = x `rem` n : poep (x^k) (2*k) y n
-  | otherwise = []
                 
+
+exMT2 :: Integer -> Integer -> Integer -> Integer
+exMT2 x y n = let 
+                squares = squareListMod x y n
+                factOf2 = toFactOf2 y 
+               in product (zipWith helper squares factOf2) `mod` n where 
+                helper x y = if y then x else 1
+ 
+squareListMod :: Integer -> Integer -> Integer -> [Integer]
+squareListMod x 0 _ = []
+squareListMod x y n = squareList' x 0 y n where
+ squareList' x k y n = if (2^k) <= y then (x^(2^k) `mod` n) : (squareList' x (k+1)  y n)
+                       else []
+
+toFactOf2 :: Integer -> [Bool]
+toFactOf2 x = decToBin' x
+ where
+decToBin' 0 = []
+decToBin' y = let (a,b) = quotRem y 2 in [(b == 1)] ++ decToBin' a
+
 
 {- 
   Assignment 2.
