@@ -37,4 +37,21 @@ exMT3 x y n = let
  in product (exMT3' factOf2 0 x ) `mod` n where
   exMT3' [] k x = []
   exMT3' (f:fs) k x = if f then ((x^(2^k)) `mod` n) : (exMT3' fs (k+1) x)
-                    else exMT3' fs (k+1) x  
+                    else exMT3' fs (k+1) x 
+
+composites :: [Integer]
+composites = compSieve (intsToIntBools [2..])
+
+intsToIntBools :: [Integer] -> [(Integer, Bool)]
+intsToIntBools [] = []
+intsToIntBools (n : xs) = (n, True) : (intsToIntBools xs)
+
+compSieve :: [(Integer, Bool)] -> [Integer]
+--compSieve [] = []
+compSieve ((x, False) : xs) = x : (compSieve xs)
+compSieve ((x, True) : xs) = compSieve (compMark xs 1 x) 
+ where
+ compMark :: [(Integer, Bool)] -> Integer -> Integer -> [(Integer, Bool)]
+-- compMark [] _ _ = []
+ compMark ((y, val):ys) k m | k == m = (y, False) : (compMark ys 1 m)
+                          | otherwise = (y, val) : (compMark ys (k+1) m)
