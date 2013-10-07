@@ -4,7 +4,9 @@ where
 import Data.List
 import System.Random
 import Week6
+import Lab6
 
+{-
 --ex1
 exMTim :: Integer -> Integer -> Integer -> Integer
 exMTim  b e m = exMHelper 1 1 m  where 
@@ -38,8 +40,8 @@ exMT3 x y n = let
  in product (exMT3' factOf2 0 x ) `mod` n where
   exMT3' [] k x = []
   exMT3' (f:fs) k x = if f then ((x^(2^k)) `mod` n) : (exMT3' fs (k+1) x)
-                    else exMT3' fs (k+1) x 
-
+                      else exMT3' fs (k+1) x 
+-}
 --ex3
 composites :: [Integer]
 composites = compSieve (intsToIntBools [2..])
@@ -70,3 +72,13 @@ testF k = let
 
 {- if you keep running this test, eventually even the first number will slip through, so 4 is the smallest composite number that is able to slip through the test. The larger you make K, the smaller the chance that some number will fall through, hence the returned number is larger.
 -}
+
+--ex5
+testCarmichael :: Int -> IO Integer
+testCarmichael k = let
+  carm = carmichael
+ in testCarmichael' k carm where
+  testCarmichael' k (c:cs) = do
+                              a <- primeF k c
+                              if a then return c
+                              else testCarmichael' k cs
