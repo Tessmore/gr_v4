@@ -4,18 +4,27 @@ where
 import Data.List
 import System.Random
 import Week6
-      
-      
+       
 {- 
   Assignment 1.
   Time spent:
   
+  Source used for detailed explenation: 
+    http://www.tricki.org/article/To_work_out_powers_mod_n_use_repeated_squaring
+  
   Function that does modular exponentiation of x^y in polynomial time, by
-  repeatedly squaring modulo N
-
+  repeatedly squaring modulo N.
 -}
-exM :: Integer -> Integer -> Integer -> Integer 
+                   
+exM' :: Integer -> Integer -> Integer -> Integer 
+exM' x 0 n = 1
+exM' x y n = let k = exM' x (y `div` 2) n
+               in if (even y)
+                    then     (k * k) `mod` n
+                    else (x * k * k) `mod` n
 
+poep :: Integer -> Integer -> Integer
+poep x y = if x*x < (y+1) then x*x else 0
 
 {- 
   Assignment 2.
@@ -24,6 +33,7 @@ exM :: Integer -> Integer -> Integer -> Integer
   Check that your implementation is more efficient than expM by running
   relevant tests and documenting the results.
 
+  
 -}  
 
 
@@ -43,7 +53,7 @@ exM :: Integer -> Integer -> Integer -> Integer
 
 -}
 
-composites :: [Integer]
+--composites :: [Integer]
 
 
 
