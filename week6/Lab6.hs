@@ -75,11 +75,9 @@ decToBin' y = let (a,b) = quotRem y 2 in [(b == 1)] ++ decToBin' a
 
 -}
 
---composites :: [Integer]
---composites = composites' [4..]
+composites :: [Integer]
+composites = filter (even) [4..100]
 
---composites' (n:ns) = n : composites'
---  (filter (\ m -> rem m n /= 0) ns)
 
 
 {- 
