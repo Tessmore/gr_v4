@@ -30,3 +30,11 @@ toFactOf2 x = decToBin' x
  where
 decToBin' 0 = []
 decToBin' y = let (a,b) = quotRem y 2 in [(b == 1)] ++ decToBin' a
+
+exMT3 :: Integer -> Integer -> Integer -> Integer
+exMT3 x y n = let
+  factOf2 = toFactOf2 y
+ in product (exMT3' factOf2 0 x ) `mod` n where
+  exMT3' [] k x = []
+  exMT3' (f:fs) k x = if f then ((x^(2^k)) `mod` n) : (exMT3' fs (k+1) x)
+                    else exMT3' fs (k+1) x  
