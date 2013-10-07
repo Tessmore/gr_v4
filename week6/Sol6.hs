@@ -12,10 +12,10 @@ Assignment 1:
 -}
 
 exM :: Integer -> Integer -> Integer -> Integer
+exM x 1 n = rem x n
 exM x y n = if rem y 2 /= 0
 	then (exMod x (y-1) n) * (rem x n)
 	else exMod x y n
 
 exMod :: Integer -> Integer -> Integer -> Integer
-exMod x 1 n = rem x n
-exMod x y n = exMod (x^2) (quot y 2) n 
+exMod x y n = exM (x^2) (quot y 2) n 
