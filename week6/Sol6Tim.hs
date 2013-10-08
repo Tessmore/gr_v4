@@ -82,3 +82,13 @@ testCarmichael k = let
                               a <- primeF k c
                               if a then return c
                               else testCarmichael' k cs
+
+--ex6
+testMR :: Int -> IO Integer
+testMR k = let
+  carm = carmichael
+ in testMR' k carm where
+  testMR' k (c:cs) = do
+                      a <- primeMR k c
+                      if a then return c
+                      else testMR' k cs
