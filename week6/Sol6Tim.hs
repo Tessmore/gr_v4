@@ -82,6 +82,9 @@ testCarmichael k = let
                               a <- primeF k c
                               if a then return c
                               else testCarmichael' k cs
+{- All carmichael numbers are fermat liars, which means they satisfy fermats theorem for some base, but actually not prime. Because carmichaels numbers might be large, the base for primeF (k) might need to be larger. That explains why no number might be found when running (testCarmichael 1) or (testCarmichael 2)
+-}
+
 
 --ex6
 testMR :: Int -> IO Integer
@@ -92,3 +95,9 @@ testMR k = let
                       a <- primeMR k c
                       if a then return c
                       else testMR' k cs
+
+{- The MR test is more strict than the fermat test since it takes longer and the returned composite number is larger. This means that it correctly classifies more composite numbers as composite.
+-}
+
+--ex7
+{- gonna check 7 tomorrow, not hard to use miller rabin on 2 to the power p - 1 with p some large mersene prime-}
