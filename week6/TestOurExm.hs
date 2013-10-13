@@ -2,6 +2,6 @@ module TestOurExm
 
 where
 
-import Sol6Tim
+import Lab6
 
 main = print (exMT2 3 37 53)

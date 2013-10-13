@@ -37,12 +37,12 @@ exMT2 x y n = let
 squareListMod :: Integer -> Integer -> Integer -> [Integer]
 squareListMod x 0 _ = []
 squareListMod x y n = squareList' x 0 y n where
- squareList' x k y n = if (2^k) <= y then (x^(2^k) `mod` n) : (squareList' x (k+1)  y n)
+ squareList' x k y n = if (2^k) <= y then (x^(2^k) `mod` n) : squareList' x (k+1)  y n
                        else []
 
 -- Helper method for factorization
 toFactOf2 :: Integer -> [Bool]
-toFactOf2 x = decToBin' x
+toFactOf2 = decToBin'
  where
 decToBin' 0 = []
 decToBin' y = let (a,b) = quotRem y 2 in [(b == 1)] ++ decToBin' a
@@ -72,21 +72,22 @@ decToBin' y = let (a,b) = quotRem y 2 in [(b == 1)] ++ decToBin' a
   Then, filter all the numbers which are marked as false and get the numbers
 -}
 
-composites' :: [Integer]
-composites' = map fst (filter (not.snd) sieveC)
+composites :: [Integer]
+composites = map fst (filter (not.snd) sieveC)
 
 sieveC :: [(Integer,Bool)] 
 sieveC = sieveCom [(x, True) | x <- [2..]]
 
 sieveCom :: [(Integer,Bool)] -> [(Integer,Bool)]
-sieveCom ((x,y):ns) = (x, y): (sieveCom ns') 
-          where ns' =
-            if y
-              then map (\ (x',y') -> 
-                if rem x' x == 0
-                  then (x', False)
-                else (x', y')) ns
-            else ns
+sieveCom ((x,y):ns) = (x, y): sieveCom ns'
+          where ns' = if y then 
+                        map (\ (x',y') -> if rem x' x == 0 then 
+                                            (x', False) 
+                                          else (x', y')) 
+                                            ns 
+                      else 
+                        ns
+
 
 {- 
   Assignment 4.
@@ -174,8 +175,25 @@ testMR k = let
     * Use the Miller-Rabin algorithm to check whether 2^p - 1 is also prime
     * Check on internet the found numbers  are genuine Mersenne primes. 
     
-  Report on your findings
+  Report on your findings:
   
+  *** Exception: 95513421886551384655206308507......7518292017809047571302187007 is not a prime.
+  *** Exception: 13454128316990507273441234211......1764350982066467259298086911 is not a prime.
+  *** Exception: 44623289911632568097011006112......7404020907669595372484820991 is not a prime.
+  *** Exception: 19322687615086291723476759454......4336733540374348490407411711 is not a prime.
+  *** Exception: 58418267242802372854733467471......1683206676499237077451276287 is not a prime.
+  *** Exception: 45694248869511749731339270259......1717409453665661424456695807 is not a prime.
+  *** Exception: 70464987632426004362292797550......8632700426437616126333550591 is not a prime.
+  *** Exception: 41458733762112420444199482867......8298992738570837806549041151 is not a prime.
+  *** Exception: 97602323201420798697706107356......9676091442066691089821073407 is not a prime.
+  *** Exception: 18635555394378846803544112604......5808269684026257542991577087 is not a prime.
+  *** Exception: 67060881961661014500261912652......5163752049785526783110545407 is not a prime.
+  *** Exception: 42815749646525926205600082959......5500798142909609824672022527 is not a prime.
+  *** Exception: 96963003772423585678984828780......8127578817493325346244657151 is not a prime
+
+  These numbers are just Mersenne number, not Mersenne primes. A basic theorem about Mersenne
+  numbers states that if Mp is prime, then the exponent p must also be prime, but the converse is
+  not true
 -}
 
 {-
@@ -184,12 +202,12 @@ testMR k = let
 -}
 getPrime :: IO Integer
 getPrime =  do
-   pos <- randomRIO (100, 1000) --get a relatively large interger
-   return (primes !! pos) -- get a relatively large prime
+   pos <- randomRIO (100, 1000) -- get a relatively large interger
+   return (primes !! pos)       -- get a relatively large prime
 
 
 {-
-    Use primeMR to test whether 2^p-1 is a prime
+  Use primeMR to test whether 2^p-1 is a prime
 -}
 testMP :: IO()
 testMP = do 
