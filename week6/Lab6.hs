@@ -134,3 +134,26 @@ carmichael = [ (6*k+1)*(12*k+1)*(18*k+1) |
   Report on your findings
   
 -}
+
+{-
+    Frist, generate a random integer;
+    Then get the prime at that Integer position.
+-}
+getPrime :: IO Integer
+getPrime =  do
+   pos <- randomRIO (100, 1000) --get a relatively large interger
+   return (primes !! pos) -- get a relatively large prime
+
+
+{-
+    Use primeMR to test whether 2^p-1 is a prime
+-}
+testMP :: IO()
+testMP = do 
+   p <- getPrime
+   k <- randomRIO (10, 50)
+   let n = (2^p-1) in
+      do 
+        res <- primeMR k n
+        if res then print (show n ++ " is a prime")
+        else error (show n ++ " is not a prime")
