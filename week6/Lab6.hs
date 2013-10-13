@@ -54,7 +54,11 @@ decToBin' y = let (a,b) = quotRem y 2 in [(b == 1)] ++ decToBin' a
   
   Check that your implementation is more efficient than expM by running
   relevant tests and documenting the results.
--}  
+  
+  First relevant test: expM needs to much computation time and exits on big numbers,
+  whereas exM' (and exM from Week6.hs) have no problems.
+  
+-}
 
 
 {-
