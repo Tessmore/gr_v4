@@ -4,4 +4,4 @@ where
 
 import Lab6
 
-main = print (exMT2 3 37 53)
+main = exM' 2232322323 223232232323223239382 2938923

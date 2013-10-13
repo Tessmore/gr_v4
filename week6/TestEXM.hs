@@ -4,4 +4,4 @@ where
 
 import Week6
 
-main = print (exM 3 37 53)
+main = expM 2323 239382 2938923
