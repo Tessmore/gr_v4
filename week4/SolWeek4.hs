@@ -102,6 +102,17 @@ trClosHelper :: Ord a => Rel a -> Rel a
 trClosHelper [] = []
 trClosHelper (x:xs) = x : ([x] @@ xs) ++ trClos xs
 
+{-
+  Another answer:
+-}
+
+trClos':: Ord a => Rel a -> Rel a
+trClos' r = let res = sort $ nub $ (r ++ (r @@ r)) 
+				in
+					if res == r
+						then r
+					else trClos' res
+
 {- 
   Assignment 5
   
