@@ -31,7 +31,7 @@ mergeSrtTest2 = mergeSrt [9,4,7,2,9,4,2,4,8,6,3,1,0,7,2,3,3,2]
 -}
 mergeSrtA :: Ord a => [a] -> [a]
 mergeSrtA = post1 sorted mergeSrt
-
+-- VVZ: very good, very lazy solution!
 
 {- 
   Assignment 2.

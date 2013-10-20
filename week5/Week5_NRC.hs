@@ -258,7 +258,7 @@ showSudoku = showGrid . sud2grid
 
 bl :: Int -> Int -> [Int]
 bl x blockType = if blockType == 1 then concat $ filter (elem x) blocks else concat $ filter (elem x) extraBlocks
-
+-- VVZ: sure, let's overcomplicate one function instead of defining two simple ones...
 
 subGrid :: Sudoku -> (Row,Column) -> Int -> [Value]
 subGrid s (r,c) blockType = 
